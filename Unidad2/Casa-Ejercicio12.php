@@ -37,7 +37,7 @@
     $datosPersona[]=34;
     $datosPersona[]=array('Nombre'=>"María",
                                     'Edad'=>19);
-    $datosPersona['boolean']='True';
+    $datosPersona[]='True';
     ?>
     <table>
         <?php
@@ -64,6 +64,9 @@
         <?php
             echo '<br>';
             $num=0;
+            //echo 'Posicion'.$num.' '.$indice.' '.gettype($var).'VALOR<br/>';
+            //is_array($var)?'':$var.'<br/>';
+
             foreach($datosPersona as $indice=>$var){
         
              if(is_array($var)){
@@ -71,7 +74,8 @@
                      echo '=>'.$ind2.' '.$var2.'<br>';
               }
              }else{
-             echo 'Posicion'.$num.' '.$indice.' - Valor '.$var.'<br>';
+                echo 'Posicion'.$num.' '.$indice.' - Valor '.$var.'<br/>';
+
              }
           }
         ?>
