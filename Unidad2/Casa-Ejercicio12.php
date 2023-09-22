@@ -37,7 +37,7 @@
     $datosPersona[]=34;
     $datosPersona[]=array('Nombre'=>"María",
                                     'Edad'=>19);
-    $datosPersona[]='True';
+    $datosPersona['boolean']='True';
     ?>
     <table>
         <?php
