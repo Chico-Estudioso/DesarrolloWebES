@@ -41,22 +41,41 @@
                     <option>Italia</option>
                 </select>
             </div>
-
+        </fieldset>
+        <fieldset>
+            <legend>Información adicional</legend>
+            <div>
+                <label>Nº de hijos</label>
+                <br>
+                <select name="nHijos">
+                    <option>1</option>
+                    <option selected="selected">2</option>
+                    <option>3</option>
+                    <option>4</option>
+                </select>
+            </div>
+            <div>
+                <label>Sube tu foto</label>
+                <br>
+                <input type="file" name="foto" />
+            </div>
+            <div>
+                <label>Aficcioens</label>
+                <br>
+                <input type="checkbox" name="aficc[]" />Cine
+                <input type="checkbox" name="aficc[]" />Deporte
+                <input type="checkbox" name="aficc[]" />Literatura
+            </div>
+            <div>
+                <label>Nombre</label>
+                <br>
+                <textarea placeholder="Escribe más sobe tí"></textarea>
+            </div>
+        </fieldset>
+        <input type="submit" name="validar" value="Validar">
+        <input type="submit" name="enviar" value="Enviar">
     </form>
-    </fieldset>
-    <fieldset>
-        <legend>Información adicional</legend>
-        <div>
-            <label>Nº de hijos</label>
-            <br>
-            <select name="nHijos">
-                <option>1</option>
-                <option selected="selected">2</option>
-                <option>3</option>
-                <option>4</option>
-            </select>
-        </div>
-    </fieldset>
+
 </body>
 
 </html>
