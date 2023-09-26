@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <form action="ejercicio14_tratamiento.php" method="post">
+    <form action="ejercicio14_tratamiento.php" method="post" enctype="multipart/form-data">
         <fieldset>
             <legend>Datos personales</legend>
             <div>
@@ -60,7 +60,7 @@
                 <input type="file" name="foto" />
             </div>
             <div>
-                <label>Aficcioens</label>
+                <label>Aficciones</label>
                 <br>
                 <input type="checkbox" name="aficc[]" value="Cine"/>Cine
                 <input type="checkbox" name="aficc[]" />Deporte
