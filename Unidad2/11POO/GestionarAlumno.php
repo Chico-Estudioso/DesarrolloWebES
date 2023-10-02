@@ -11,10 +11,32 @@ include_once 'claseAlumno.php';
 </head>
 
 <body>
+    <form action="" method="post">
+    <div>
+        <label for="numExp">NºExpediente</label>
+        <input type="text" name="numExp" placeholder="nombre Alumno">
+    </div>
+    <div>
+        <label for="nombre">Nombre</label>
+        <input type="text" name="nombre" >
+    </div>
+    <div>
+        <label for="fechaN">Fecha Nacimiento</label>
+        <input type="date" name="fechaN" >
+    </div>
+
+    </form>
     <?php
-    $a = new Alumno(1, 'Paco', time());
-    $a->mostrar();
+        if(isset($_POST['crear'])){
+            $a=new Alumno($_POST['numExp'],$_POST['nombre'],$_POST['fechaN']);
+            $a->mostrar();
+        }
     ?>
+    
+    <!--<?php
+    /*$a = new Alumno(1, 'Paco', time());
+    $a->mostrar();*/
+    ?>-->
 </body>
 
 </html>
