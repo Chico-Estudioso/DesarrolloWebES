@@ -49,6 +49,18 @@ function obtenerAlumno(int $numExp){
     }
     return $resultado;
 }
+
+function obtenerAlumnos(){
+    $resultado=array();
+    global $nombreFichero;
+    try {
+        if (file_exists($nombreFichero)) {
+            $contenido=file($nombreFichero);
+        }
+    } catch (\Throwable $th) {
+        echo $th->getMessage();
+    }
+}
 ?>
 
 

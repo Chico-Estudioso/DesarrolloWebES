@@ -49,6 +49,25 @@ include_once 'AccesoDatos.php'
             }
         }
     ?>
+<h1>Listado de Alumnos</h1>
+<hr>
+<table border= "1" width="50%" >
+    <tr>
+        <th>Id</th>
+        <th>Nombre</th>
+        <th>Fecha nacimiento</th>
+    </tr>
+    <?php
+    foreach ($alumnos as $a) {
+        echo '<tr>';
+        echo '<td>'.$a->getNumExp().'<\td>';
+        echo '<td>'.$a->getNombre().'<\td>';
+        echo '<td>'.$a->date('d/m/Y',$a->getFechaN()).'<\td>';
+        echo  '</tr>';
+    }
+    ?>
 
+    
+</table>
 </body>
 </html>
