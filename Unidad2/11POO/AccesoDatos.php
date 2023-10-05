@@ -56,6 +56,11 @@ function obtenerAlumnos(){
     try {
         if (file_exists($nombreFichero)) {
             $contenido=file($nombreFichero);
+            foreach($contenido as $linea){
+                $campos=explode(';',$linea);
+                $a=new Alumno($campos[0], $campos[1], $campos[2]);
+                $resultado[]=$a;
+            }
         }
     } catch (\Throwable $th) {
         echo $th->getMessage();
