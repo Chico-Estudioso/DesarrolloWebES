@@ -24,7 +24,7 @@
         <br>
     <?php
             for ($i = 0; $i < $_POST['numero']; $i++) {
-                echo '<input type="text" name="opciones[]" placeholder="Opción:' . $i . '"/>';
+                echo '<input type="text" name="opciones[]" placeholder="Opción:' . ($i+1) . '"/>';
             }
         }
     ?>
