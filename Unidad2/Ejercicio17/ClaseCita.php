@@ -13,6 +13,29 @@ class Cita{
         $this->tipoServicio=$tipoServicio;
     }
 
+    public function obtenerNombreServicio(){
+        switch ($this->tipoServicio) {
+            case '1':
+            return 'Corte Señora';
+            case '2':
+            return 'Corte Caballero';
+            case '3':
+            return 'Corte Tinte';
+            case '4':
+            return 'Corte Señora';
+    }}
+    public function obtenerTiempoServicio(){
+        switch ($this->hora) {
+            case '1':
+            return 'Corte Señora';
+            case '2':
+            return 'Corte Caballero';
+            case '3':
+            return 'Corte Tinte';
+            case '4':
+            return 'Corte Señora';
+    }}
+
     /**
      * Get the value of fecha
      */ 

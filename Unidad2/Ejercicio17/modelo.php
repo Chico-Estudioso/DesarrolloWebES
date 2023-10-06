@@ -22,4 +22,17 @@ function crearCita(Cita $c){
     }
     return $resultado;
 }
-}?>
+public function obtenerCitas(){
+    $resultado=array();
+
+    if (file_exists($this->nombreFichero)) {
+        $datos=file($this->nombreFichero);
+        foreach($datos as $linea){
+            $campo=explode(';',$linea);
+            $cita=new Cita($campo[0],$campo[1],$campo[2],$campo[3]);
+            $resultado[]=$cita;
+        }
+    }
+    return $resultado;
+}
+}
