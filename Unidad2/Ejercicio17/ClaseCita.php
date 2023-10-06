@@ -1,44 +1,70 @@
 <?php
-class Cita{
-    private DateTime $fecha;
-    private int $hora;
-    private string $nombre;
-    private int $tipoServicio;
+class Cita
+{
+    private string $fecha;
+    private string $hora;
+    private string $nombreC;
+    private int $tipoS;
 
-    public function __construct($fecha, $hora, $nombre, $tipoServicio)
+    public function __construct($fecha, $hora, $nombreC, $tipoS)
     {
-        $this->fecha=$fecha;
-        $this->hora=$hora;
-        $this->nombre=$nombre;
-        $this->tipoServicio=$tipoServicio;
+        $this->fecha = $fecha;
+        $this->hora = $hora;
+        $this->nombreC = $nombreC;
+        $this->tipoS = $tipoS;
     }
 
-    public function obtenerNombreServicio(){
-        switch ($this->tipoServicio) {
+    public function obtenerNombreServicio()
+    {
+        switch ($this->tipoS) {
             case '1':
-            return 'Corte Señora';
+                return 'Corte Señora';
             case '2':
-            return 'Corte Caballero';
+                return 'Corte Caballero';
             case '3':
-            return 'Corte Tinte';
+                return 'Tinte';
             case '4':
-            return 'Corte Señora';
-    }}
-    public function obtenerTiempoServicio(){
-        switch ($this->hora) {
+                return 'Mechas';
+        }
+    }
+
+    public function obtenerTiempoServicio()
+    {
+        switch ($this->tipoS) {
             case '1':
-            return 'Corte Señora';
+                return 30;
             case '2':
-            return 'Corte Caballero';
+                return 15;
             case '3':
-            return 'Corte Tinte';
+                return 120;
             case '4':
-            return 'Corte Señora';
-    }}
+                return 180;
+        }
+    }
+
+    /**
+     * Get the value of tipoS
+     */
+    public function getTipoS()
+    {
+        return $this->tipoS;
+    }
+
+    /**
+     * Set the value of tipoS
+     *
+     * @return  self
+     */
+    public function setTipoS($tipoS)
+    {
+        $this->tipoS = $tipoS;
+
+        return $this;
+    }
 
     /**
      * Get the value of fecha
-     */ 
+     */
     public function getFecha()
     {
         return $this->fecha;
@@ -48,7 +74,7 @@ class Cita{
      * Set the value of fecha
      *
      * @return  self
-     */ 
+     */
     public function setFecha($fecha)
     {
         $this->fecha = $fecha;
@@ -58,7 +84,7 @@ class Cita{
 
     /**
      * Get the value of hora
-     */ 
+     */
     public function getHora()
     {
         return $this->hora;
@@ -68,7 +94,7 @@ class Cita{
      * Set the value of hora
      *
      * @return  self
-     */ 
+     */
     public function setHora($hora)
     {
         $this->hora = $hora;
@@ -77,43 +103,22 @@ class Cita{
     }
 
     /**
-     * Get the value of nombre
-     */ 
-    public function getNombre()
+     * Get the value of nombreC
+     */
+    public function getNombreC()
     {
-        return $this->nombre;
+        return $this->nombreC;
     }
 
     /**
-     * Set the value of nombre
+     * Set the value of nombreC
      *
      * @return  self
-     */ 
-    public function setNombre($nombre)
+     */
+    public function setNombreC($nombreC)
     {
-        $this->nombre = $nombre;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of tipoServicio
-     */ 
-    public function getTipoServicio()
-    {
-        return $this->tipoServicio;
-    }
-
-    /**
-     * Set the value of tipoServicio
-     *
-     * @return  self
-     */ 
-    public function setTipoServicio($tipoServicio)
-    {
-        $this->tipoServicio = $tipoServicio;
+        $this->nombreC = $nombreC;
 
         return $this;
     }
 }
-?>
