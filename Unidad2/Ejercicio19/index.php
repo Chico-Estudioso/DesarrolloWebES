@@ -24,11 +24,26 @@
         <br>
     <?php
             for ($i = 0; $i < $_POST['numero']; $i++) {
-                echo '<input type="text" name="opciones[]" placeholder="Opción:' . ($i+1) . '"/>';
+                echo '<input type="text" name="opciones[]" placeholder="Opción:' . ($i + 1) . '"/>';
             }
         }
     ?>
+    <input type="submit" name="mostrar" value="mostrar">
     </div>
+    <div>
+
+    </div>
+    <!-- Pintar el menú -->
+    <?php
+    if (isset($_POST['mostrar'])) {
+        if (isset($_POST['opciones'])) {
+            foreach ($_POST['opciones'] as $opcion) {
+                echo '<span style="background-color: ' . $_POST['colorF'] .
+                    ';color: ' . $_POST['colorP'] . '; border: 5px;' . $opcion . '></span>';
+            }
+        }
+    }
+    ?>
 </body>
 
 </html>
