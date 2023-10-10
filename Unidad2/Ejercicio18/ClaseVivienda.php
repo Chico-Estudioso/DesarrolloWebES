@@ -5,40 +5,20 @@ class Vivienda{
     private string $direccion;
     private int $numHab;
     private float $precio;
-    private int $tamaño;
+    private int $tamanio;
     private string $extras;
+    private string $observacion;
 
-    public function __construct($tipoV, $zona, $direccion, $numHab, $precio, $tamaño, $extras)
+    public function __construct($tipoV, $zona, $direccion, $numHab, $precio, $tamanio, $extras, $observacion)
     {
         $this->tipoV = $tipoV;
         $this->zona = $zona;
         $this->direccion = $direccion;
         $this->numHab = $numHab;
         $this->precio = $precio;
-        $this->tamaño = $tamaño;
+        $this->tamanio = $tamanio;
         $this->extras = $extras;  
-    }
-
-    public function obtenerVivienda()
-    {
-        switch ($this->tipoV) {
-            case '1':
-                return 'Adosado';
-            case '2':
-                return 'Unifamiliar';
-            case '3':
-                return 'Piso';
-        }
-    }
-
-    public function obtenerZona()
-    {
-        switch ($this->zona) {
-            case '1':
-                return 'Centro';
-            case '2':
-                return 'Periferia';
-        }
+        $this->observacion=$observacion;
     }
 
     public function obtenerNumHabitaciones()
@@ -54,7 +34,7 @@ class Vivienda{
     }
 
     public function obtenerExtras(){
-        
+       
     }
 
     /**
@@ -158,26 +138,6 @@ class Vivienda{
     }
 
     /**
-     * Get the value of tamaño
-     */ 
-    public function getTamaño()
-    {
-        return $this->tamaño;
-    }
-
-    /**
-     * Set the value of tamaño
-     *
-     * @return  self
-     */ 
-    public function setTamaño($tamaño)
-    {
-        $this->tamaño = $tamaño;
-
-        return $this;
-    }
-
-    /**
      * Get the value of extras
      */ 
     public function getExtras()
@@ -193,6 +153,46 @@ class Vivienda{
     public function setExtras($extras)
     {
         $this->extras = $extras;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tamanio
+     */ 
+    public function getTamanio()
+    {
+        return $this->tamanio;
+    }
+
+    /**
+     * Set the value of tamanio
+     *
+     * @return  self
+     */ 
+    public function setTamanio($tamanio)
+    {
+        $this->tamanio = $tamanio;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of observacion
+     */ 
+    public function getObservacion()
+    {
+        return $this->observacion;
+    }
+
+    /**
+     * Set the value of observacion
+     *
+     * @return  self
+     */ 
+    public function setObservacion($observacion)
+    {
+        $this->observacion = $observacion;
 
         return $this;
     }

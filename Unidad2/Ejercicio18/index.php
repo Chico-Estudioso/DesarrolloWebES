@@ -2,7 +2,7 @@
 require_once 'ClaseVivienda.php';
 require_once 'modelo.php';
 
-$ad=new Modelo();
+$ad = new Modelo();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,16 +18,16 @@ $ad=new Modelo();
         <div>
             <label for="tipoVivienda">Tipo de Vivienda </label>
             <select name="tipoVivienda">
-                <option value="1" selected>Adosado</option>
-                <option value="2">Unifamiliar</option>
-                <option value="3">Piso</option>
+                <option selected>Adosado</option>
+                <option>Unifamiliar</option>
+                <option>Piso</option>
             </select>
         </div>
         <div>
             <label for="zonaVivienda">Zona de la Vivienda </label>
-            <select name="tipoVivienda">
-                <option value="1" selected>Centro</option>
-                <option value="2">Periferia</option>
+            <select name="zonaVivienda">
+                <optionselected>Centro</option>
+                <option>Periferia</option>
             </select>
         </div>
         <div>
@@ -45,14 +45,14 @@ $ad=new Modelo();
             <input type="num" name="precioViv" placeholder="Precio">
         </div>
         <div>
-            <label for="tamañoVivienda">Introduzca el tamaño</label>
-            <input type="num" name="tamañoViv" placeholder="Tamaño de la vivienda">
+            <label for="tamanioVivienda">Introduzca el tamaño</label>
+            <input type="num" name="tamanioViv" placeholder="Tamaño de la vivienda">
         </div>
         <div>
             <label for="extrasVivienda">Selecciona los extras que necesitas:</label>
-            <input type="checkbox" name="xtra[]" value="1"> Garaje
-            <input type="checkbox" name="xtra[]" value="2"> Trastero
-            <input type="checkbox" name="xtra[]" value="3"> Piscina
+            <input type="checkbox" name="xtra[]" value="Garaje"> Garaje
+            <input type="checkbox" name="xtra[]" value="Trastero"> Trastero
+            <input type="checkbox" name="xtra[]" value="Piscina"> Piscina
         </div>
         <div>
             <label for="observacionesVivienda">Observaciones</label>
@@ -66,32 +66,70 @@ $ad=new Modelo();
     <?php
     if (isset($_POST['crear'])) {
         if (
-            isset($_POST['tipoVivienda']) or isset($_POST['zonaVivienda']) 
-            or empty($_POST['direccionVivienda']) or empty($_POST['precioVivienda']) 
-            or empty($_POST['tamañoVivienda'])
+            empty($_POST['direccionViv']) or empty($_POST['precioViv'])
+            or empty($_POST['tamanioViv'])
         ) {
             echo '<h3 style="color:red">Error, rellena todos los campos</h3>';
         } else {
-            $vivienda = new Vivienda(
-                $_POST['tipoVivienda'],
-                $_POST['zonaVivienda'],
-                $_POST['direccionVivienda'],
-                $_POST['numHabitaciones'],
-                $_POST['precioVivienda'],
-                $_POST['tamañoVivienda'],
-                $_POST['extrasVivienda'],
-                $_POST['observacionesViv']
-            );
+            if (isset($_POST['xtra'])) {
+                $vivienda = new Vivienda(
+                    $_POST['tipoVivienda'],
+                    $_POST['zonaVivienda'],
+                    $_POST['direccionViv'],
+                    $_POST['numHabitacion'],
+                    $_POST['precioViv'],
+                    $_POST['tamanioViv'],
+                    implode(",", $_POST['xtra']),
+                    $_POST['observacionesViv']
+                );
+            } else {
+                $extratxt = "";
+                $vivienda = new Vivienda(
+                    $_POST['tipoVivienda'],
+                    $_POST['zonaVivienda'],
+                    $_POST['direccionViv'],
+                    $_POST['numHabitacion'],
+                    $_POST['precioViv'],
+                    $_POST['tamanioViv'],
+                    $extratxt,
+                    $_POST['observacionesViv']
+                );
+            }
 
-            if ($ad->crearCita($vivienda)) {
+
+            if ($ad->crearVivienda($vivienda)) {
                 echo '<h3 style="color:blue">Vivienda creada con éxito</h3>';
             } else {
                 echo '<h3 style="color:red">Error al crear la vivienda</h3>';
             }
         }
     }
-    $vivienda=$ad->obtenerCitas();
+    $vivienda = $ad->obtenerVivienda();
     ?>
+    <table width="50%" align="center">
+        <tr>
+            <td><b>Tipo Vivienda</b></td>
+            <td><b>Zona</b></td>
+            <td><b>Num Hab</b></td>
+            <td><b>Precio</b></td>
+            <td><b>Tamaño</b></td>
+            <td><b>Extras</b></td>
+            <td><b>observaciones</b></td>
+        </tr>
+        <?php
+        foreach ($vivienda as $c) {
+            echo '<tr>';
+            echo '<td>' . $c->getTipoV() . '</td>';
+            echo '<td>' . $c->getZona() . '</td>';
+            echo '<td>' . $c->obtenerNumHabitaciones() . '</td>';
+            echo '<td>' . $c->getPrecio() . '</td>';
+            echo '<td>' . $c->getTamanio() . '</td>';
+            echo '<td>' . $c->getExtras() . '</td>';
+            echo '<td>' . $c->getObservacion() . '</td>';
+            echo '</tr>';
+        }
+        ?>
+    </table>
 </body>
 
 </html>
