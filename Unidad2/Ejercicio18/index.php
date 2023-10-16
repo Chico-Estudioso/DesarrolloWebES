@@ -1,7 +1,6 @@
 <?php
-require_once 'ClaseVivienda.php';
 require_once 'modelo.php';
-
+require_once 'Vivienda.php';
 $ad = new Modelo();
 ?>
 <!DOCTYPE html>
@@ -10,123 +9,135 @@ $ad = new Modelo();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio 18</title>
+    <title>Document</title>
+    <style>
+    /* Estilo para el div del formulario */
+    .formulario-div {
+        border: 1px solid black;
+        /* Agrega un borde al div del formulario */
+        text-align: center;
+        /* Centra el texto en el div */
+        padding: 20px;
+        /* Añade un espacio interior al div */
+    }
+
+    /* Estilo para la tabla */
+    table {
+        border: 1px solid black;
+        /* Agrega un borde a la tabla */
+        width: 50%;
+        /* Establece el ancho de la tabla */
+        margin: 0 auto;
+        /* Centra la tabla horizontalmente */
+    }
+
+    /* Estilo para las celdas de la tabla */
+    table td {
+        border: 1px solid black;
+        /* Agrega un borde a las celdas */
+        padding: 5px;
+        /* Añade un espacio interior a las celdas */
+    }
+    </style>
 </head>
 
 <body>
-    <form action="" method="post">
-        <div>
-            <label for="tipoVivienda">Tipo de Vivienda </label>
-            <select name="tipoVivienda">
-                <option selected>Adosado</option>
+    <div class="formulario-div">
+        <form action="" method="post">
+            <label for="tipoV">Selecciona el tipo de vivienda: </label>
+            <select name="tipoV">
+                <option>Adosado</option>
                 <option>Unifamiliar</option>
                 <option>Piso</option>
             </select>
-        </div>
-        <div>
-            <label for="zonaVivienda">Zona de la Vivienda </label>
-            <select name="zonaVivienda">
-                <optionselected>Centro</option>
+            <br>
+
+            <label for="zona">Selecciona la zona: </label>
+            <select name="zona">
+                <option>Centro</option>
                 <option>Periferia</option>
             </select>
-        </div>
-        <div>
-            <label for="direccionVivienda">Direccion</label>
-            <input type="text" name="direccionViv" placeholder="direccion de la Vivienda">
-        </div>
-        <div>
-            <label for="numHabitaciones">Numero de Habitaciones</label>
-            <input type="radio" name="numHabitacion" checked="checked" value="1"> 1
-            <input type="radio" name="numHabitacion" value="2"> 2
-            <input type="radio" name="numHabitacion" value="3"> 3
-        </div>
-        <div>
-            <label for="precioVivienda">Introduzca el precio</label>
-            <input type="num" name="precioViv" placeholder="Precio">
-        </div>
-        <div>
-            <label for="tamanioVivienda">Introduzca el tamaño</label>
-            <input type="num" name="tamanioViv" placeholder="Tamaño de la vivienda">
-        </div>
-        <div>
-            <label for="extrasVivienda">Selecciona los extras que necesitas:</label>
-            <input type="checkbox" name="xtra[]" value="Garaje"> Garaje
-            <input type="checkbox" name="xtra[]" value="Trastero"> Trastero
-            <input type="checkbox" name="xtra[]" value="Piscina"> Piscina
-        </div>
-        <div>
-            <label for="observacionesVivienda">Observaciones</label>
             <br>
-            <textarea name="observacionesViv" placeholder="Observaciones sobre la vivienda"></textarea>
-        </div>
-        <div>
+            <label>Introduce dirección:</label>
+            <input type="text" name="direccion">
+            <br>
+
+            <label>Selecciona nº de habitaciones: </label>
+            <input type="radio" name="nH" checked="checked" value="1">1
+            <input type="radio" name="nH" value="2">2
+            <input type="radio" name="nH" value="3">3
+            <br>
+
+            <label>Introduce precio:</label>
+            <input type="text" name="precio">
+            <br>
+
+            <label>Introduce tamaño:</label>
+            <input type="text" name="tamanio">
+            <br>
+
+            <label>Selecciona los extras que necesites: </label>
+            <input type="checkbox" name="extra[]" value="Garaje">Garaje
+            <input type="checkbox" name="extra[]" value="Trastero">Trastero
+            <input type="checkbox" name="extra[]" value="Piscina">Piscina
+            <br>
+
+            <label>Observaciones</label>
+            <br>
+            <textarea name="comentario" cols="30" rows="10"></textarea>
+            <br>
             <input type="submit" name="crear" value="Crear Vivienda">
-        </div>
-    </form>
+        </form>
+    </div>
     <?php
     if (isset($_POST['crear'])) {
-        if (
-            empty($_POST['direccionViv']) or empty($_POST['precioViv'])
-            or empty($_POST['tamanioViv'])
-        ) {
-            echo '<h3 style="color:red">Error, rellena todos los campos</h3>';
+        if (empty($_POST['direccion'] or $_POST['precio'] or $_POST['tamanio'])) {
+            echo '<h3 style="color:red;">Debes rellenar todos los campos</h3>';
         } else {
-            if (isset($_POST['xtra'])) {
-                $vivienda = new Vivienda(
-                    $_POST['tipoVivienda'],
-                    $_POST['zonaVivienda'],
-                    $_POST['direccionViv'],
-                    $_POST['numHabitacion'],
-                    $_POST['precioViv'],
-                    $_POST['tamanioViv'],
-                    implode(",", $_POST['xtra']),
-                    $_POST['observacionesViv']
-                );
-            } else {
-                $extratxt = "";
-                $vivienda = new Vivienda(
-                    $_POST['tipoVivienda'],
-                    $_POST['zonaVivienda'],
-                    $_POST['direccionViv'],
-                    $_POST['numHabitacion'],
-                    $_POST['precioViv'],
-                    $_POST['tamanioViv'],
-                    $extratxt,
-                    $_POST['observacionesViv']
-                );
-            }
+            $v = new Vivienda(
+                $_POST['tipoV'],
+                $_POST['zona'],
+                $_POST['direccion'],
+                $_POST['nH'],
+                $_POST['precio'],
+                $_POST['tamanio']
+            );
 
+            $strextra = implode(',', $_POST['extra']);
+            $v->setExtra($strextra);
+            $v->setComentario($_POST['comentario']);
 
-            if ($ad->crearVivienda($vivienda)) {
-                echo '<h3 style="color:blue">Vivienda creada con éxito</h3>';
+            if ($ad->crearVivienda($v)) {
+                echo '<h3 style="color:blue">Vivienda creada</h3>';
             } else {
                 echo '<h3 style="color:red">Error al crear la vivienda</h3>';
             }
         }
     }
-    $vivienda = $ad->obtenerVivienda();
+    $vivi = $ad->obtenerViviendas();
     ?>
-    <table width="50%" align="center">
+    <table>
         <tr>
-            <td><b>Tipo Vivienda</b></td>
+            <td><b>Tipo de vivienda</b></td>
             <td><b>Zona</b></td>
-            <td><b>Num Hab</b></td>
+            <td><b>Dirección</b></td>
+            <td><b>Nº de habitaciones</b></td>
             <td><b>Precio</b></td>
             <td><b>Tamaño</b></td>
             <td><b>Extras</b></td>
-            <td><b>observaciones</b></td>
+            <td><b>Observaciones</b></td>
         </tr>
         <?php
-        foreach ($vivienda as $c) {
+        foreach ($vivi as $v) {
             echo '<tr>';
-            echo '<td>' . $c->getTipoV() . '</td>';
-            echo '<td>' . $c->getZona() . '</td>';
-            echo '<td>' . $c->obtenerNumHabitaciones() . '</td>';
-            echo '<td>' . $c->getPrecio() . '</td>';
-            echo '<td>' . $c->getTamanio() . '</td>';
-            echo '<td>' . $c->getExtras() . '</td>';
-            echo '<td>' . $c->getObservacion() . '</td>';
-            echo '</tr>';
+            echo '<td>' . $v->getTipoV() . '</td>';
+            echo '<td>' . $v->getZona() . '</td>';
+            echo '<td>' . $v->getDireccion() . '</td>';
+            echo '<td>' . $v->getNH() . '</td>';
+            echo '<td>' . $v->getPrecio() . '</td>';
+            echo '<td>' . $v->getTamanio() . '</td>';
+            echo '<td>' . $v->getExtra() . '</td>';
+            echo '<td>' . $v->getComentario() . '</td>';
         }
         ?>
     </table>

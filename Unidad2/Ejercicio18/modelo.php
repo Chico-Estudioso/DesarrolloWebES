@@ -1,42 +1,44 @@
 <?php
-require_once 'ClaseVivienda.php';
+require_once 'Vivienda.php';
+
 class Modelo
 {
-    private string $nombreFichero = 'Vivienda.txt';
+    private string $nombreFichero = "viviendas.txt";
+
+    function __construct()
+    {
+    }
 
     function crearVivienda(Vivienda $v)
     {
-        $f = null;
+        $fich = null;
         try {
-            //Abrir fichero para añadir
-            $f = fopen($this->nombreFichero, "a+");
-            //Añadir cita
+            $fich = fopen($this->nombreFichero, "a+");
             fwrite(
-                $f,
-                $v->getTipoV() . ";" . $v->getZona() . ";" . $v->getDireccion() . ";" . $v->obtenerNumHabitaciones() . ";" . $v->getPrecio() . ";" . $v->getTamanio() . ";" . $v->getExtras() . ";" . $v->getObservacion() . PHP_EOL
+                $fich,
+                $v->getTipoV() . ";" . $v->getZona() . ";" . $v->getDireccion() . ";" . $v->getNH() . ";" . $v->getPrecio() . ";" . $v->getTamanio() . ";" . $v->getExtra() . ";" . $v->getComentario() . ";" . PHP_EOL
             );
             $resultado = true;
         } catch (\Throwable $th) {
             echo $th->getMessage();
         } finally {
-            //Cerrar fichero
-            if ($f != null) {
-                fclose($f);
+            if ($fich != null) {
+                fclose($fich);
             }
         }
         return $resultado;
     }
-
-    function obtenerVivienda()
+    public function obtenerViviendas()
     {
         $resultado = array();
 
         if (file_exists($this->nombreFichero)) {
-            $datos = file($this->nombreFichero);
-            //Convertimos cada linea del fichero en un objeto Cita
-            foreach ($datos as $linea) {
-                $campos = explode(';', $linea);
-                $vivienda = new Vivienda($campos[0], $campos[1], $campos[2], $campos[3], $campos[4], $campos[5], $campos[6], $campos[7]);
+            $archivos = file($this->nombreFichero);
+            foreach ($archivos as $linea) {
+                $pos = explode(';', $linea);
+                $vivienda = new Vivienda($pos[0], $pos[1], $pos[2], $pos[3], $pos[4], $pos[5]);
+                $vivienda->setExtra($pos[6]);
+                $vivienda->setComentario($pos[7]);
                 $resultado[] = $vivienda;
             }
         }
