@@ -1,3 +1,28 @@
+<?php
+function rellenarSelected($campo, $item, $opcionPorDefecto)
+{
+    //Si el item vienen en $_POST, hay que marcarlo como seleccionado
+    if (isset($_POST[$campo])) {
+        if ($_POST[$campo] == $item) {
+            echo 'selected="selected"';
+        }
+    } elseif ($opcionPorDefecto) {
+        echo 'selected="selected"';
+    }
+}
+
+function rellenarRadio($campo, $item, $opcionPorDefecto)
+{
+    //Si el item vienen en $_POST, hay que marcarlo como seleccionado
+    if (isset($_POST[$campo])) {
+        if ($_POST[$campo] == $item) {
+            echo 'selected="selected"';
+        }
+    } elseif ($opcionPorDefecto) {
+        echo 'selected="selected"';
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,19 +36,25 @@
     <form action="" method="post">
         <div>
             <label>DNI</label><br />
-            <input type="text" name="dni" />
+            <input type="text" name="dni" value="<?php
+                                                    if (isset($_POST['dni'])) {
+                                                        echo $_POST['dni'];
+                                                    }
+                                                    ?>" />
         </div>
         <div>
             <label>Nombre Cliente</label><br />
-            <input type="text" name="nombre" placeholder="Nombre del Cliente" />
+            <input type="text" name="nombre" placeholder="Nombre del Cliente"
+                value="<?php
+                                                                                        echo (isset($_POST['nombre']) ? $_POST['nombre'] : ''); ?>" />
         </div>
         <br />
         <div>
             <label>Tipo de habitación</label><br />
             <select name="tipoH">
-                <option selected="selected">Doble</option>
-                <option>Individual</option>
-                <option>Suite</option>
+                <option <?php rellenarSelected('tipoH', 'Doble', true); ?>>Doble</option>
+                <option <?php rellenarSelected('tipoH', 'Individual', false); ?>>Individual</option>
+                <option <?php rellenarSelected('tipoH', 'Suite', false); ?>>Suite</option>
             </select>
         </div>
         <br />
@@ -34,16 +65,17 @@
         <div>
             <label>Estancia</label><br />
             <select name="estancia">
-                <option value="1">Diario</option>
-                <option value="2">Fin de semana</option>
-                <option value="3">Promocionado</option>
+                <option <?php rellenarSelected('estancia', '1', true); ?> value="1">Diario</option>
+                <option <?php rellenarSelected('estancia', '2', false); ?> value="2">Fin de semana</option>
+                <option <?php rellenarSelected('estancia', '3', false); ?> value="3">Promocionado</option>
             </select>
         </div>
         <br />
         <div>
             <label>Pago</label><br />
-            <input type="radio" name="pago" value="Efectivo" />Efectivo
-            <input type="radio" name="pago" value="Tarjeta" checked="checked" />Tarjeta
+            <input type="radio" name="pago" value="Efectivo"
+                <?php rellenarRadio('pago', 'Efectivo', false); ?> />Efectivo
+            <input type="radio" name="pago" value="Tarjeta" <?php rellenarRadio('pago', 'Tarjeta', true); ?> />Tarjeta
         </div>
         <br />
         <div>
