@@ -22,6 +22,10 @@ function rellenarRadio($campo, $item, $opcionPorDefecto)
         echo 'selected="selected"';
     }
 }
+
+function rellenarCheckbox($valor)
+{
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,8 +48,7 @@ function rellenarRadio($campo, $item, $opcionPorDefecto)
         </div>
         <div>
             <label>Nombre Cliente</label><br />
-            <input type="text" name="nombre" placeholder="Nombre del Cliente"
-                value="<?php
+            <input type="text" name="nombre" placeholder="Nombre del Cliente" value="<?php
                                                                                         echo (isset($_POST['nombre']) ? $_POST['nombre'] : ''); ?>" />
         </div>
         <br />
@@ -73,16 +76,15 @@ function rellenarRadio($campo, $item, $opcionPorDefecto)
         <br />
         <div>
             <label>Pago</label><br />
-            <input type="radio" name="pago" value="Efectivo"
-                <?php rellenarRadio('pago', 'Efectivo', false); ?> />Efectivo
+            <input type="radio" name="pago" value="Efectivo" <?php rellenarRadio('pago', 'Efectivo', false); ?> />Efectivo
             <input type="radio" name="pago" value="Tarjeta" <?php rellenarRadio('pago', 'Tarjeta', true); ?> />Tarjeta
         </div>
         <br />
         <div>
             <label>Opciones</label><br />
-            <input type="checkbox" name="opciones[]" value="1" />Cuna
-            <input type="checkbox" name="opciones[]" value="2" />Cama Supletoria
-            <input type="checkbox" name="opciones[]" value="3" />Lavandería
+            <input type="checkbox" name="opciones[]" value="1" <?php rellenarCheckbox('1'); ?> />Cuna
+            <input type="checkbox" name="opciones[]" value="2" <?php rellenarCheckbox('2'); ?> />Cama Supletoria
+            <input type="checkbox" name="opciones[]" value="3" <?php rellenarCheckbox('3'); ?> />Lavandería
         </div>
         <br />
         <div>
