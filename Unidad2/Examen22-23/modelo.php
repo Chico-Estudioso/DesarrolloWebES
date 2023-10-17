@@ -1,22 +1,22 @@
 <?php
-require_once 'Vivienda.php';
+require_once 'Estancia.php';
 
 class Modelo
 {
-    private string $nombreFichero = "viviendas.txt";
+    private string $nombreFichero = "estancias.txt";
 
     function __construct()
     {
     }
 
-    function crearVivienda(Vivienda $v)
+    function crearEstancia(Estancia $e)
     {
         $fich = null;
         try {
             $fich = fopen($this->nombreFichero, "a+");
             fwrite(
                 $fich,
-                $v->getTipoV() . ";" . $v->getZona() . ";" . $v->getDireccion() . ";" . $v->getNH() . ";" . $v->getPrecio() . ";" . $v->getTamanio() . ";" . $v->getExtra() . ";" . $v->getComentario() . ";" . PHP_EOL
+                $e->getDni() . ";" . $e->getNombre() . ";" . $e->getTipoH() . ";" . $e->getNNoches() . ";" . $e->getEstancia() . ";" . $e->getPago() . ";" . $e->getOpciones() . ";" . PHP_EOL
             );
             $resultado = true;
         } catch (\Throwable $th) {
@@ -28,7 +28,7 @@ class Modelo
         }
         return $resultado;
     }
-    public function obtenerViviendas()
+    public function obtenerEstancias()
     {
         $resultado = array();
 
@@ -36,10 +36,9 @@ class Modelo
             $archivos = file($this->nombreFichero);
             foreach ($archivos as $linea) {
                 $pos = explode(';', $linea);
-                $vivienda = new Vivienda($pos[0], $pos[1], $pos[2], $pos[3], $pos[4], $pos[5]);
-                $vivienda->setExtra($pos[6]);
-                $vivienda->setComentario($pos[7]);
-                $resultado[] = $vivienda;
+                $estancia = new Estancia($pos[0], $pos[1], $pos[2], $pos[3], $pos[4], $pos[5]);
+                $estancia->setOpciones($pos[6]);
+                $resultado[] = $estancia;
             }
         }
         return $resultado;

@@ -1,45 +1,28 @@
-<?php 
-class Vivienda{
+<?php
+class Vivienda
+{
     private string $tipoV;
     private string $zona;
     private string $direccion;
-    private int $numHab;
-    private float $precio;
+    private int $nH;
+    private int $precio;
     private int $tamanio;
-    private string $extras;
-    private string $observacion;
+    private string $extra = "";
+    private string $comentario = "";
 
-    public function __construct($tipoV, $zona, $direccion, $numHab, $precio, $tamanio, $extras, $observacion)
+    public function __construct($tipoV, $zona, $direccion, $nH, $precio, $tamanio)
     {
         $this->tipoV = $tipoV;
         $this->zona = $zona;
         $this->direccion = $direccion;
-        $this->numHab = $numHab;
+        $this->nH = $nH;
         $this->precio = $precio;
         $this->tamanio = $tamanio;
-        $this->extras = $extras;  
-        $this->observacion=$observacion;
-    }
-
-    public function obtenerNumHabitaciones()
-    {
-        switch ($this->numHab) {
-            case '1':
-                return 1;
-            case '2':
-                return 2;
-            case '3':
-                return 3;
-        }
-    }
-
-    public function obtenerExtras(){
-       
     }
 
     /**
      * Get the value of tipoV
-     */ 
+     */
     public function getTipoV()
     {
         return $this->tipoV;
@@ -49,7 +32,7 @@ class Vivienda{
      * Set the value of tipoV
      *
      * @return  self
-     */ 
+     */
     public function setTipoV($tipoV)
     {
         $this->tipoV = $tipoV;
@@ -59,7 +42,7 @@ class Vivienda{
 
     /**
      * Get the value of zona
-     */ 
+     */
     public function getZona()
     {
         return $this->zona;
@@ -69,7 +52,7 @@ class Vivienda{
      * Set the value of zona
      *
      * @return  self
-     */ 
+     */
     public function setZona($zona)
     {
         $this->zona = $zona;
@@ -79,7 +62,7 @@ class Vivienda{
 
     /**
      * Get the value of direccion
-     */ 
+     */
     public function getDireccion()
     {
         return $this->direccion;
@@ -89,7 +72,7 @@ class Vivienda{
      * Set the value of direccion
      *
      * @return  self
-     */ 
+     */
     public function setDireccion($direccion)
     {
         $this->direccion = $direccion;
@@ -98,28 +81,28 @@ class Vivienda{
     }
 
     /**
-     * Get the value of numHab
-     */ 
-    public function getNumHab()
+     * Get the value of nH
+     */
+    public function getNH()
     {
-        return $this->numHab;
+        return $this->nH;
     }
 
     /**
-     * Set the value of numHab
+     * Set the value of nH
      *
      * @return  self
-     */ 
-    public function setNumHab($numHab)
+     */
+    public function setNH($nH)
     {
-        $this->numHab = $numHab;
+        $this->nH = $nH;
 
         return $this;
     }
 
     /**
      * Get the value of precio
-     */ 
+     */
     public function getPrecio()
     {
         return $this->precio;
@@ -129,7 +112,7 @@ class Vivienda{
      * Set the value of precio
      *
      * @return  self
-     */ 
+     */
     public function setPrecio($precio)
     {
         $this->precio = $precio;
@@ -138,28 +121,48 @@ class Vivienda{
     }
 
     /**
-     * Get the value of extras
-     */ 
-    public function getExtras()
+     * Get the value of extra
+     */
+    public function getExtra()
     {
-        return $this->extras;
+        return $this->extra;
     }
 
     /**
-     * Set the value of extras
+     * Set the value of extra
      *
      * @return  self
-     */ 
-    public function setExtras($extras)
+     */
+    public function setExtra($extra)
     {
-        $this->extras = $extras;
+        $this->extra = $extra;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of comentario
+     */
+    public function getComentario()
+    {
+        return $this->comentario;
+    }
+
+    /**
+     * Set the value of comentario
+     *
+     * @return  self
+     */
+    public function setComentario($comentario)
+    {
+        $this->comentario = $comentario;
 
         return $this;
     }
 
     /**
      * Get the value of tamanio
-     */ 
+     */
     public function getTamanio()
     {
         return $this->tamanio;
@@ -169,30 +172,10 @@ class Vivienda{
      * Set the value of tamanio
      *
      * @return  self
-     */ 
+     */
     public function setTamanio($tamanio)
     {
         $this->tamanio = $tamanio;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of observacion
-     */ 
-    public function getObservacion()
-    {
-        return $this->observacion;
-    }
-
-    /**
-     * Set the value of observacion
-     *
-     * @return  self
-     */ 
-    public function setObservacion($observacion)
-    {
-        $this->observacion = $observacion;
 
         return $this;
     }
