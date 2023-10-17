@@ -1,0 +1,2 @@
+23;Bichi;2023-10-11;Benjamin;Masculina;Segunda A;Entrenamientos,Partidos;
+23;Bichi;2023-10-04;Benjamin;Masculina;Primera;Entrenamientos,Chandal;
