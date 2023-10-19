@@ -2,11 +2,14 @@
 //Comprobamos si hay que borrar o guardar la cookie
 if (isset($_POST['guardar'])) {
     setcookie('colorF', $_POST['colorF'], time() + (24 * 60 * 60));
-    setcookie('colort', $_POST['colorF'], time() + (24 * 60 * 60));
+    setcookie('colorT', $_POST['colorT'], time() + (24 * 60 * 60));
+    header('location:ej2.php');
 }
 if (isset($_POST['borrar'])) {
-    setcookie('colorF', '', $_POST['colorF'], time() + (24 * 60 * 60));
-    setcookie('colort', '', $_POST['colorF'], time() + (24 * 60 * 60));
+    setcookie('colorF', '',  time()-1);
+    setcookie('colorT', '',  time() -1);
+    header('location:ej2.php');
+
 }
 $colorF = '#FFFFFF';
 $colorT = '#000000';
@@ -41,7 +44,7 @@ if (isset($_COOKIE['colorT'])) {
         </div>
         <div>
             <label>Color de texto</label> <br>
-            <input type="color" name="colorT" value="<?php echo $colorF; ?>">
+            <input type="color" name="colorT" value="<?php echo $colorT; ?>">
         </div>
         <div>
             <br>
