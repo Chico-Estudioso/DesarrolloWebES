@@ -1,11 +1,11 @@
 <?php
 class Pieza{
-
     private string $codigo;
     private string $clase;
     private string $descripcion;
     private float $precio;
-    private int $stock;   
+    private int $stock;
+
     function __construct()
     {
         
