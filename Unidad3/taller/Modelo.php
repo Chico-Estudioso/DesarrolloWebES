@@ -1,5 +1,5 @@
 <?php
-require_once 'pieza/Pieza.php';
+require_once 'piezas/pieza.php';
 
 class Modelo{
     

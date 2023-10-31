@@ -24,6 +24,7 @@ if ($bd->getConexion() == null) {
     </header>
     <section>
         <!-- Crear Pieza -->
+        
     </section>
     <section>
         <!-- Comunicar mensajes -->
@@ -47,13 +48,30 @@ if ($bd->getConexion() == null) {
         ?>
 
         <table class="table table-striped">
-            <tr>
-                <th>Clase</th>
-                <th>Código</th>
-                <th>Descripcion</th>
-                <th>Precio</th>
-                <th>Stock</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Clase</th>
+                    <th>Código</th>
+                    <th>Descripcion</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <?php
+                    foreach ($piezas as $p) {
+                        echo '<tr>';
+                        echo '<th>'.$p->getCodigo().'</th>';
+                        echo '<th>'.$p->getClase().'</th>';
+                        echo '<th>'.$p->getDescripcion().'</th>';
+                        echo '<th>'.$p->getPrecio().'</th>';
+                        echo '<th>'.$p->getStock().'</th>';
+                        echo '</tr>';
+                    }
+                    ?>
+                </tr>
+            </tbody>
         </table>
     </section>
     <footer>
