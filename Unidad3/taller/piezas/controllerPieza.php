@@ -4,6 +4,31 @@ $bd = new Modelo();
 if ($bd->getConexion() == null) {
     $mensaje = array('e', 'Error, no hay conexión con la bd');
 }
+else {
+    //Programar botón crear
+    if (isset($_POST['crear'])) {
+        # Comprobar que todos los campos están rellenos
+        if (empty($_POST['codigo']) or empty($_POST['clase']) or empty($_POST['desc'])
+        or empty($_POST['precio']) or empty($_POST['stock'])) {
+            $mensaje=array('e', 'Debes rellenar todos los campos');
+
+        }else{
+            //Insertar en la BD la pieza
+            $p=new Pieza();
+            $p->setCodigo($_POST['codigo']);
+            $p->setClase($_POST['clase']);
+            $p->setDescripcion($_POST['descripcion']);
+            $p->setPrecio($_POST['precio']);
+            $p->setStock($_POST['stock']);
+
+            if($bd->insertarPieza($p)){
+                $mensaje=array('i','Pieza creada');
+            }else {
+                $mensaje=array('e','Error al crear la pieza');
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,58 +46,100 @@ if ($bd->getConexion() == null) {
         <?php
         require_once '../menu.php';
         ?>
+        <h3 style="text-align: center;">GESTIÓN DE PIEZAS</h3>
     </header>
     <section>
-        <!-- Crear Pieza -->
-        
+        <div class="container p-5 my-5 border">
+            <!-- Crear Pieza -->
+            <form action="#" method="post">
+                <div class="row">
+                    <div class="col">
+                        <label>Código</label>
+                        <input type="text" name="codigo" placeholder="F01" />
+                    </div>
+                    <div class="col">
+                        <label>Clase</label>
+                        <select name="clase" class="form-select-sm">
+                            <option>Refrigeración</option>
+                            <option>Filtro</option>
+                            <option>Motor</option>
+                            <option>Otros</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label>Descripción</label>
+                        <input type="text" name="desc" placeholder="Nombre pieza" />
+                    </div>
+                    <div class="col">
+                        <label>Precio</label>
+                        <input type="number" name="precio" step="0.01" />
+                    </div>
+                    <div class="col">
+                        <label>Stock</label>
+                        <input type="number" name="stock" />
+                    </div>
+                    <div class="col">
+
+                        <input type="submit" name="crear" value="Crear" />
+                        <input type="reset" name="limpiar" value="Cancelar" />
+                    </div>
+                </div>
+        </div>
+        </form>
+        </div>
     </section>
     <section>
+
         <!-- Comunicar mensajes -->
         <?php
         if (isset($mensaje)) {
+            echo '<div class="container p-5 my-5 border">';
             if ($mensaje[0] == 'e')
-                echo '<h3 class="text-danger">' . $mensaje[1] . '</h3>';
+                echo '<h4 class="text-danger">' . $mensaje[1] . '</h4>';
             else
-                echo '<h3 class="text-success">' . $mensaje[1] . '</h3>';
+                echo '<h4 class="text-success">' . $mensaje[1] . '</h4>';
+            echo '</div>';
         }
         ?>
     </section>
     <section>
-        <!-- Mostrar piezas y dar opción a modificar y borrar -->
-        <?php
-        if ($bd->getConexion() != null) {
-            //Obtener piezas
-            $piezas = $bd->obtenerPiezas();
-        }
+        <div class="container p-5 my-5 border">
+            <!-- Mostrar piezas y dar opción a modificar y borrar -->
+            <?php
+            if ($bd->getConexion() != null) {
+                //Obtener piezas
+                $piezas = $bd->obtenerPiezas();
+                //Mostramos las piezas en una tabla
+            ?>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Clase</th>
+                            <th>Descrición</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($piezas as $p) {
+                            echo '<tr>';
+                            echo '<td>' . $p->getCodigo() . '</td>';
+                            echo '<td>' . $p->getClase() . '</td>';
+                            echo '<td>' . $p->getDescripcion() . '</td>';
+                            echo '<td>' . $p->getPrecio() . '</td>';
+                            echo '<td>' . $p->getStock() . '</td>';
+                            echo '</tr>';
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            <?php
+            }
+            ?>
+        </div>
 
-        ?>
-
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Clase</th>
-                    <th>Código</th>
-                    <th>Descripcion</th>
-                    <th>Precio</th>
-                    <th>Stock</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <?php
-                    foreach ($piezas as $p) {
-                        echo '<tr>';
-                        echo '<th>'.$p->getCodigo().'</th>';
-                        echo '<th>'.$p->getClase().'</th>';
-                        echo '<th>'.$p->getDescripcion().'</th>';
-                        echo '<th>'.$p->getPrecio().'</th>';
-                        echo '<th>'.$p->getStock().'</th>';
-                        echo '</tr>';
-                    }
-                    ?>
-                </tr>
-            </tbody>
-        </table>
     </section>
     <footer>
 

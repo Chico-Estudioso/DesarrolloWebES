@@ -45,6 +45,19 @@ class Modelo{
         return $resultado;
     }
 
+    function insertarPieza(Pieza $p){
+        $resultado=false;
+        try {
+            $consulta=$this->conexion->prepare(
+                'insert into pieza values(?,?,?,?,?)');
+            $parms=array($p->getCodigo(),$p->getClase(),$p->getDescripcion(),$p->getPrecio(),$p->getStock());
+           return $consulta->execute($parms);    
+        } catch (PDOException $e) {
+            $e->getMessage();
+        }
+        return $resultado;
+    }
+
 
     /**
      * Get the value of conexion
