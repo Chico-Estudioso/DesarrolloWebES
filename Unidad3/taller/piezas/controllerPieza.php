@@ -4,31 +4,6 @@ $bd = new Modelo();
 if ($bd->getConexion() == null) {
     $mensaje = array('e', 'Error, no hay conexión con la bd');
 }
-else {
-    //Programar botón crear
-    if (isset($_POST['crear'])) {
-        # Comprobar que todos los campos están rellenos
-        if (empty($_POST['codigo']) or empty($_POST['clase']) or empty($_POST['desc'])
-        or empty($_POST['precio']) or empty($_POST['stock'])) {
-            $mensaje=array('e', 'Debes rellenar todos los campos');
-
-        }else{
-            //Insertar en la BD la pieza
-            $p=new Pieza();
-            $p->setCodigo($_POST['codigo']);
-            $p->setClase($_POST['clase']);
-            $p->setDescripcion($_POST['descripcion']);
-            $p->setPrecio($_POST['precio']);
-            $p->setStock($_POST['stock']);
-
-            if($bd->insertarPieza($p)){
-                $mensaje=array('i','Pieza creada');
-            }else {
-                $mensaje=array('e','Error al crear la pieza');
-            }
-        }
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,7 +34,7 @@ else {
                     </div>
                     <div class="col">
                         <label>Clase</label>
-                        <select name="clase" class="form-select-sm">
+                        <select name="clase">
                             <option>Refrigeración</option>
                             <option>Filtro</option>
                             <option>Motor</option>
@@ -79,13 +54,11 @@ else {
                         <input type="number" name="stock" />
                     </div>
                     <div class="col">
-
                         <input type="submit" name="crear" value="Crear" />
                         <input type="reset" name="limpiar" value="Cancelar" />
                     </div>
                 </div>
-        </div>
-        </form>
+            </form>
         </div>
     </section>
     <section>
@@ -130,6 +103,8 @@ else {
                             echo '<td>' . $p->getDescripcion() . '</td>';
                             echo '<td>' . $p->getPrecio() . '</td>';
                             echo '<td>' . $p->getStock() . '</td>';
+                            echo '<button class="btn btn-outline-dark" name="borrar" value=""><img src"../icon/delete25.png"/></button>';
+                            echo '<button class="btn btn-outline-dark" name="modif" value=""><img src"../icon/modif25.png"/></button>';
                             echo '</tr>';
                         }
                         ?>
