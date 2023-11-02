@@ -36,8 +36,14 @@ if ($bd->getConexion() == null) {
     } elseif (isset($_POST['borrar'])) {
         $p = $bd->obtenerPieza($_POST['borrar']);
         if ($p != null) {
+            //Comprobar si se puede borrar primero si no se ha usado en una reparación
+            if ($bd->existenReparaciones($p->getCodigo())) {
+                $mensaje = array('e', 'No puedes pasar la pieza porque ya existe en reparaciones');
+            }
             if ($bd->borrarPieza($p->getCodigo())) {
                 $mensaje = array('i', 'Pieza Borrada');
+            } else {
+                $mensaje = array('e', 'Se ha producido un error al borrar la pieza');
             }
         } else {
             $mensaje = array('e', 'Error, la pieza no existe');
@@ -146,10 +152,42 @@ if ($bd->getConexion() == null) {
                                 echo '<td>' . $p->getPrecio() . '</td>';
                                 echo '<td>' . $p->getStock() . '</td>';
                                 echo '<td>';
-                                echo '<button class="btn btn-outline-dark" name="borrar" value="' . $p->getCodigo() . '"><img src"../icon/delete25.png"/></button>';
-                                echo '<button class="btn btn-outline-dark" name="modif" value="' . $p->getCodigo() . '"><img src"../icon/modif25.png"/></button>';
+                                echo '<button type="submit" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#a' . $p->getCodigo() . '" name="avisar" value="' . $p->getCodigo() . '"><img src"../icon/delete25.png"/></button>';
+                                echo '<button type="button" class="btn btn-outline-dark" name="modif" value="#a' . $p->getCodigo() . '"><img src"../icon/modif25.png"/></button>';
                                 echo '</td>';
                                 echo '</tr>';
+
+                                //Definir ventana modal
+                                
+
+                            ?>                           
+                                <!-- The Modal -->
+                                <div class="modal" id="a<?php echo $p->getCodigo(); ?>">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Borrar Pieza</h4>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                ¿Está usted seguro de que desea borrar la pieza seleccionada?
+                                            </div>
+
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="submit" name="borrar" value="<?php echo $P->getCodigo(); ?>" class="btn btn-danger" data-bs-dismiss="modal">Borrar</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <?php
+
                             }
                             ?>
                         </tbody>

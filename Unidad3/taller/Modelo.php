@@ -104,6 +104,24 @@ class Modelo{
         return $resultado;
     }
 
+    function existenReparaciones(string $codigo){
+        $resultado=false;
+        try {
+            $consulta=$this->conexion->prepare("select * from piezasreparacion where pieza = ? ");
+            $parametros=array($codigo);
+            if ($consulta->execute($parametros)) {
+                if ($consulta->fetch()) {
+                    $resultado=true;
+                }
+            }
+            
+        } catch (PDOException $e) {
+            $e->getMessage();
+        }
+
+        return $resultado;
+    }
+
 
     /**
      * Get the value of conexion
