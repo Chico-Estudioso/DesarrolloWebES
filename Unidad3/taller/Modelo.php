@@ -84,6 +84,26 @@ class Modelo{
         return $resultado;
     }
 
+    function borrarPieza(string $codigo){
+        $resultado=false;
+        try {
+            $consulta=$this->conexion->prepare("delete from pieza where codigo=?");
+            $parametros=array($codigo);
+            if ($consulta->execute($parametros)) {
+                //Comprobar si se ha borrado al menos un registro
+                // En ese casp,ponemos resultado = true
+                if ($consulta->rowCount()==1) {
+                    $resultado=true;
+                }
+            }
+            
+        } catch (PDOException $e) {
+            $e->getMessage();
+        }
+
+        return $resultado;
+    }
+
 
     /**
      * Get the value of conexion

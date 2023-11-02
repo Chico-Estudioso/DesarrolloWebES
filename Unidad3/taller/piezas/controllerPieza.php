@@ -3,6 +3,46 @@ require_once '../Modelo.php';
 $bd = new Modelo();
 if ($bd->getConexion() == null) {
     $mensaje = array('e', 'Error, no hay conexión con la bd');
+} else {
+    //Botón crear
+    if (isset($_POST['crear'])) {
+        //Comprobar que todos los campos están rellenos
+        if (
+            empty($_POST['codigo']) or empty($_POST['clase']) or empty($_POST['desc'])
+            or empty($_POST['precio']) or empty($_POST['stock'])
+        ) {
+            $mensaje = array('e', 'Debes relleanar todos los campos');
+        } else {
+            //Comprobar que no existe una pieza con el mismo código
+            $p = $bd->obtenerPieza($_POST['codigo']);
+            if ($p == null) {
+                //La pieza no existe, se puede crear
+                //Insertar en la BD la pieza
+                $p = new Pieza();
+                $p->setCodigo($_POST['codigo']);
+                $p->setClase($_POST['clase']);
+                $p->setDescripcion($_POST['desc']);
+                $p->setPrecio($_POST['precio']);
+                $p->setStock($_POST['stock']);
+                if ($bd->insertarPieza($p)) {
+                    $mensaje = array('i', 'Pieza creada');
+                } else {
+                    $mensaje = array('e', 'Error al crear la pieza');
+                }
+            } else {
+                $mensaje = array('e', 'Pieza ya existe:' . $p->getCodigo() . ' ' . $p->getDescripcion());
+            }
+        }
+    } elseif (isset($_POST['borrar'])) {
+        $p = $bd->obtenerPieza($_POST['borrar']);
+        if ($p != null) {
+            if ($bd->borrarPieza($p->getCodigo())) {
+                $mensaje = array('i', 'Pieza Borrada');
+            }
+        } else {
+            $mensaje = array('e', 'Error, la pieza no existe');
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -84,32 +124,37 @@ if ($bd->getConexion() == null) {
                 $piezas = $bd->obtenerPiezas();
                 //Mostramos las piezas en una tabla
             ?>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Clase</th>
-                            <th>Descrición</th>
-                            <th>Precio</th>
-                            <th>Stock</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ($piezas as $p) {
-                            echo '<tr>';
-                            echo '<td>' . $p->getCodigo() . '</td>';
-                            echo '<td>' . $p->getClase() . '</td>';
-                            echo '<td>' . $p->getDescripcion() . '</td>';
-                            echo '<td>' . $p->getPrecio() . '</td>';
-                            echo '<td>' . $p->getStock() . '</td>';
-                            echo '<button class="btn btn-outline-dark" name="borrar" value=""><img src"../icon/delete25.png"/></button>';
-                            echo '<button class="btn btn-outline-dark" name="modif" value=""><img src"../icon/modif25.png"/></button>';
-                            echo '</tr>';
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                <form action="#" method="post">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Clase</th>
+                                <th>Descrición</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($piezas as $p) {
+                                echo '<tr>';
+                                echo '<td>' . $p->getCodigo() . '</td>';
+                                echo '<td>' . $p->getClase() . '</td>';
+                                echo '<td>' . $p->getDescripcion() . '</td>';
+                                echo '<td>' . $p->getPrecio() . '</td>';
+                                echo '<td>' . $p->getStock() . '</td>';
+                                echo '<td>';
+                                echo '<button class="btn btn-outline-dark" name="borrar" value="' . $p->getCodigo() . '"><img src"../icon/delete25.png"/></button>';
+                                echo '<button class="btn btn-outline-dark" name="modif" value="' . $p->getCodigo() . '"><img src"../icon/modif25.png"/></button>';
+                                echo '</td>';
+                                echo '</tr>';
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </form>
             <?php
             }
             ?>
