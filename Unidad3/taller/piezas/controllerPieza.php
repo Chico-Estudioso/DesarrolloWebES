@@ -96,7 +96,7 @@ if ($bd->getConexion() == null) {
     <header>
         <?php
         require_once '../menu.php';
-        ?>
+        ?> 
         <h3 style="text-align: center;">GESTIÓN DE PIEZAS</h3>
     </header>
     <section>
