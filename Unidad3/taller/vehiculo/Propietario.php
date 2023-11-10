@@ -1,18 +1,16 @@
 <?php
-class Usuario
+class Propietario
 {
     private int $id;
-    private string $dni;
-    private string $nombre;
-    private string $perfil;
+    private string $dni, $nombre, $telefono, $email;
 
-
-
-    public function __construct($id,  $dni,  $nombre,  $perfil){
+    function __construct($id, $dni, $nombre, $telefono, $email)
+    {
         $this->id = $id;
         $this->dni = $dni;
         $this->nombre = $nombre;
-        $this->perfil = $perfil;
+        $this->telefono = $telefono;
+        $this->email = $email;
     }
 
     /**
@@ -76,21 +74,41 @@ class Usuario
     }
 
     /**
-     * Get the value of perfil
+     * Get the value of telefono
      */
-    public function getPerfil()
+    public function getTelefono()
     {
-        return $this->perfil;
+        return $this->telefono;
     }
 
     /**
-     * Set the value of perfil
+     * Set the value of telefono
      *
      * @return  self
      */
-    public function setPerfil($perfil)
+    public function setTelefono($telefono)
     {
-        $this->perfil = $perfil;
+        $this->telefono = $telefono;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of email
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set the value of email
+     *
+     * @return  self
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
 
         return $this;
     }
