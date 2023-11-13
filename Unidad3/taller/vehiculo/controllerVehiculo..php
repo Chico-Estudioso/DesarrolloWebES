@@ -47,7 +47,8 @@ if ($bd->getConexion() == null) {
                 $mensaje = array('e', 'Error, ya existe propietario con ese dni');
             }
         }
-    } elseif (isset($_POST['update'])) {
+    } elseif (isset($_POST['mostrarV'])) {
+        $vehiculos=$bd->obtenerVehiculos($_POST['propietario']);
     } elseif (isset($_POST['borrar'])) {
     }
 }
@@ -80,7 +81,7 @@ if ($bd->getConexion() == null) {
     </section>
     <section>
         <!-- Seleccionar / Visulizar datos de vehículo -->
-        <?php include_once 'datosVehiculo.php' ?>
+        <?php include_once 'datosVehiculos.php' ?>
     </section>
     <section>
         <!-- Seleccionar / Visulizar datos de reparaciones -->

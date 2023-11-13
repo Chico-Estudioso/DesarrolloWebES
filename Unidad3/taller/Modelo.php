@@ -106,6 +106,28 @@ class Modelo
         return $resultado;
     }
 
+    function obtenerVehiculos($codigoP){
+        $resultado = array();
+        try {
+            $consulta = $this->conexion->prepare('SELECT * from vehiculo where propietario=?');
+            $params = array($codigoP);
+            if ($consulta->execute(($params))) {
+                while ($fila = $consulta->fetch()) {
+                    $v = new Vehiculo(
+                        $fila[0],
+                        $fila[1],
+                        $fila[2],
+                        $fila[3]
+                    );
+                    $resultado[]=$v;
+                }
+            }
+        } catch (PDOException $e) {
+            $e->getMessage();
+        }
+        return $resultado;
+    }
+
     function crearVehiculo(Vehiculo $v)
     {
         $resultado = null;
