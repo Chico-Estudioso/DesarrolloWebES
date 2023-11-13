@@ -2,6 +2,7 @@
 require_once 'pieza/Pieza.php';
 require_once 'usuario/Usuario.php';
 require_once 'vehiculo/Propietario.php';
+require_once 'vehiculo/Vehiculo.php';
 class Modelo
 {
 
@@ -83,6 +84,46 @@ class Modelo
         return $resultado;
     }
 
+    function obtenerVehiculo($matricula)
+    {
+        $resultado = null;
+        try {
+            $consulta = $this->conexion->prepare('SELECT * from vehiculo where matricula=?');
+            $params = array($matricula);
+            if ($consulta->execute(($params))) {
+                if ($fila = $consulta->fetch()) {
+                    $resultado = new Vehiculo(
+                        $fila[0],
+                        $fila[1],
+                        $fila[2],
+                        $fila[3]
+                    );
+                }
+            }
+        } catch (PDOException $e) {
+            $e->getMessage();
+        }
+        return $resultado;
+    }
+
+    function crearVehiculo(Vehiculo $v)
+    {
+        $resultado = null;
+        try {
+            $consulta = $this->conexion->prepare('INSERT into vehiculo values(default,?,?,?)');
+            $params = array($v->getPropietario(), $v->getMatricula(), $v->getColor());
+            if ($consulta->execute(($params))) {
+                if ($consulta->rowCount() == 1) {
+                    $resultado = true;
+                    $v->setCodigo($this->conexion->lastInsertId());
+                }
+            }
+        } catch (PDOException $e) {
+            $e->getMessage();
+        }
+        return $resultado;
+    }
+
     function modificarUsuario(Usuario $u)
     {
         $resultado = false;
@@ -137,6 +178,7 @@ class Modelo
         }
         return $resultado;
     }
+
     function obtenerUsuarios()
     {
         $resultado = array();
