@@ -9,7 +9,7 @@
                 <label>Matrícula</label>
             </div>
             <div class="col">
-                <label>Color</label>
+                <label>Tipo Usuario</label>
             </div>
             <div class="col">
             </div>
