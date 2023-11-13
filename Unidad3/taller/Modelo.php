@@ -42,6 +42,47 @@ class Modelo
         return $resultado;
     }
 
+    function obtenerPropietario($dni)
+    {
+        $resultado = null;
+        try {
+            $consulta = $this->conexion->prepare('SELECT * from propietario where dni=?');
+            $params = array($dni);
+            if ($consulta->execute(($params))) {
+                if ($fila = $consulta->fetch()) {
+                    $resultado = new Propietario(
+                        $fila[0],
+                        $fila[1],
+                        $fila[2],
+                        $fila[3],
+                        $fila[4]
+                    );
+                }
+            }
+        } catch (PDOException $e) {
+            $e->getMessage();
+        }
+        return $resultado;
+    }
+
+    function crearPropietario(Propietario $p)
+    {
+        $resultado = null;
+        try {
+            $consulta = $this->conexion->prepare('INSERT into propietario values(default,?,?,?,?)');
+            $params = array($p->getDni(), $p->getNombre(), $p->getTelefono(), $p->getEmail());
+            if ($consulta->execute(($params))) {
+                if ($consulta->rowCount() == 1) {
+                    $resultado = true;
+                    $p->setId($this->conexion->lastInsertId());
+                }
+            }
+        } catch (PDOException $e) {
+            $e->getMessage();
+        }
+        return $resultado;
+    }
+
     function modificarUsuario(Usuario $u)
     {
         $resultado = false;

@@ -19,6 +19,21 @@ if ($bd->getConexion() == null) {
             $mensaje = array('e', 'Debe rellenar todos los campos');
         } else {
         }
+    } elseif (isset($_POST['insertP'])) {
+        if (empty($_POST['dni']) or empty($_POST['telefono'])) {
+            $mensaje = array('e', 'Debe de rellenar todos los campos');
+        } else {
+            $p = $bd->obtenerPropietario($_POST['dni']);
+            if ($p == null) {
+                //Crear Propietario
+                $p = new Propietario(0, $_POST['dni'], $_POST['nombre'], $_POST['telefono'], $_POST['email']);
+                if ($bd->crearPropietario($p)) {
+                    $mensaje = array('i', 'Propietario creado con código: ' . $p->getId());
+                }
+            } else {
+                $mensaje = array('e', 'Error, ya existe propietario con ese dni');
+            }
+        }
     } elseif (isset($_POST['update'])) {
     } elseif (isset($_POST['borrar'])) {
     }
