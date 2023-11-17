@@ -3,6 +3,8 @@ require_once 'pieza/Pieza.php';
 require_once 'usuario/Usuario.php';
 require_once 'vehiculo/Propietario.php';
 require_once 'vehiculo/Vehiculo.php';
+require_once 'reparacion/Reparacion.php';
+
 class Modelo
 {
 
@@ -370,6 +372,25 @@ class Modelo
         }
         return $resultado;
     }
+
+    function obtenerReparacionees($idV)
+    {
+        $resultado = array();
+        try {
+            $consulta = $this->conexion->prepare("select * from reparacion where coche = ?");
+            $parms = array($idV);
+            if ($consulta->execute()) {
+                while ($fila = $consulta->fetch()) {
+                    $r = new Reparacion($fila["id"], $fila["coche"], $fila["fechaHora"], $fila["tiempo"], $fila["pagado"], $fila["usuario"], $fila["precioH"]);
+                    $resultado[] = $r;
+                }
+            }
+        } catch (PDOException $th) {
+            $th->getMessage();
+        }
+        return $resultado;
+    }
+
     function insertarPieza(Pieza $p)
     {
         $resultado = false;

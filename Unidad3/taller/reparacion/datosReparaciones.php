@@ -22,23 +22,27 @@
                     <?php
                     foreach ($reparaciones as $r) {
                         echo '<tr>';
-                        if (isset($_POST['modif']) and $_POST['modif'] == $r->getCodigo()) {
+                        if (isset($_POST['modif']) and $_POST['modif'] == $r->getId()) {
                             //Pintar campos para poder modificar
-                            echo '<td> <input type="text" name="codigo" disabled="disabled" value="' . $r->getCodigo() . '"/></td>';
-                            echo '<td> <input type="text" name="matricula" value="' . $r->getMatricula() . '"/></td>';
+                            echo '<td> <input type="text" name="id" disabled="disabled" value="' . $r->getId() . '"/></td>';
+                            echo '<td> <input type="text" name="matricula" value="' . $r->getCoche() . '"/></td>';
                             echo '<td> <input type="color" name="color" value="' . $r->getColor() . '"/></td>';
                             echo '<td>';
-                            echo '<button type="submit" class="btn btn-outline-dark" name="update" value="' . $r->getCodigo() . '">Guardar</button>';
+                            echo '<button type="submit" class="btn btn-outline-dark" name="update" value="' . $r->getId() . '">Guardar</button>';
                             echo '<button type="submit" class="btn btn-outline-dark" name="cancelar">Cancelar</button>';
                             echo '</td>';
                         } else {
-                            echo '<td>' . $r->getCodigo() . '</td>';
-                            echo '<td>' . $r->getMatricula() . '</td>';
-                            echo '<td><input type="color" name="color" disabled="disabled" value="' . $r->getColor() . '"/></td>';
+                            echo '<td>' . $r->getId() . '</td>';
+                            echo '<td>' . $r->getCoche() . '</td>';
+                            echo '<td>' . $r->getFecha() . '</td>';
+                            echo '<td>' . $r->getTiempo() . '</td>';
+                            echo '<td>' . $r->getPagado() . '</td>';
+                            echo '<td>' . $r->getUsuario() . '</td>';
+                            echo '<td>' . $r->getPrecioH() . '</td>';
                             echo '<td>';
-                            echo '<button type="submit" class="btn btn-outline-dark" name="modif" value="' . $r->getCodigo()  . '"><img src="../icon/modif25.png"/></button>';
-                            echo '<button type="button" class="btn btn-outline-dark"  data-bs-toggle="modal"  data-bs-target="#a' . $r->getCodigo() . '" name="avisar" value="' . $r->getCodigo() . '"><img src="../icon/delete25.png"/></button>';
-                            echo '<button type="submit" class="btn btn-outline-dark" name="mostrarR" value="' . $r->getCodigo()  . '">Reparaciones</button>';
+                            echo '<button type="submit" class="btn btn-outline-dark" name="modif" value="' . $r->getId()  . '"><img src="../icon/modif25.png"/></button>';
+                            echo '<button type="button" class="btn btn-outline-dark"  data-bs-toggle="modal"  data-bs-target="#a' . $r->getid() . '" name="avisar" value="' . $r->getid() . '"><img src="../icon/delete25.png"/></button>';
+                            echo '<button type="submit" class="btn btn-outline-dark" name="mostrarR" value="' . $r->getId()  . '">Reparaciones</button>';
                             echo '</td>';
                         }
                         echo '</tr>';
@@ -46,7 +50,7 @@
                         //Definir ventana modal
                     ?>
                         <!-- The Modal -->
-                        <div class="modal" id="a<?php echo $r->getCodigo(); ?>">
+                        <div class="modal" id="a<?php echo $r->getid(); ?>">
                             <div class="modal-dialog">
                                 <div class="modal-content">
 
@@ -58,15 +62,17 @@
 
                                     <!-- Modal body -->
                                     <div class="modal-body">
-                                        ¿Está seguro que desea borrar el vehículo
+                                        ¿Está seguro que desea borrar la reparacion numero
                                         <?php
-                                        echo $r->getMatricula();
+                                        echo $r->getId();
+                                        ?> del coche <?php
+                                            $bd->obtenerVehiculo($r->getCoche())->getMatricula()
                                         ?>?
                                     </div>
 
                                     <!-- Modal footer -->
                                     <div class="modal-footer">
-                                        <button type="submit" name="borrar" value="<?php echo $r->getCodigo(); ?>" class="btn btn-danger" data-bs-dismiss="modal">Borrar</button>
+                                        <button type="submit" name="borrar" value="<?php echo $r->getid(); ?>" class="btn btn-danger" data-bs-dismiss="modal">Borrar</button>
                                     </div>
 
                                 </div>
