@@ -12,43 +12,58 @@ if ($bd->getConexion() == null) {
     ) {
         header('location:../usuario/login.php');
     }
+
     //Botón crear
     if (isset($_POST['crear'])) {
-        if (empty($_POST['propietario']) or empty($_POST['matricula']) or empty($_POST['color'])) {
+        if (
+            empty($_POST['propietario']) or empty($_POST['matricula']) or
+            empty($_POST['color'])
+        ) {
             $mensaje = array('e', 'Debe rellenar todos los campos');
         } else {
-            //Comprobar que no existe otro vehiculo con la misma matricula
+            //Comprobar que no existe otro vehículo con la misma matrícula
             $v = $bd->obtenerVehiculo($_POST['matricula']);
             if ($v == null) {
-                //Crear Vehiculo
+                //Crear Vehículo
                 $v = new Vehiculo(0, $_POST['propietario'], $_POST['matricula'], $_POST['color']);
                 if ($bd->crearVehiculo($v)) {
-                    $mensaje = array('i', 'Vehiculo Creado');
+                    $mensaje = array('i', 'Vehículo Creado');
                 } else {
-                    $mensaje = array('e', 'Se ha producido un error al crear el vehiculo');
+                    $mensaje = array('e', 'Se ha producido un error al crear el vehículo');
                 }
             } else {
-                $mensaje = array('e', 'Error, ya existe un vehiculo con esa matricula');
+                $mensaje = array('e', 'Error, ya existe un vehículo con esa matrícula');
             }
         }
     } elseif (isset($_POST['insertP'])) {
-        if (empty($_POST['dni']) or empty($_POST['telefono'])) {
-            $mensaje = array('e', 'Debe de rellenar todos los campos');
+        if (empty($_POST['dni']) or empty($_POST['telefono']) or empty($_POST['nombre'])) {
+            $mensaje = array('e', 'Debe rellenar todos los campos');
         } else {
+            //Comprobar que no hay otro propietario con el mismo dni
             $p = $bd->obtenerPropietario($_POST['dni']);
             if ($p == null) {
-                //Crear Propietario
-                $p = new Propietario(0, $_POST['dni'], $_POST['nombre'], $_POST['telefono'], $_POST['email']);
+                //Crear propietario
+                $p = new Propietario(
+                    0,
+                    $_POST['dni'],
+                    $_POST['nombre'],
+                    $_POST['telefono'],
+                    $_POST['email']
+                );
                 if ($bd->crearPropietario($p)) {
-                    $mensaje = array('i', 'Propietario creado con código: ' . $p->getId());
+                    $mensaje = array('i', 'Propietario creado con código:' . $p->getId());
+                } else {
+                    $mensaje = array('e', 'Se ha producido un error al crear el propietario');
                 }
             } else {
                 $mensaje = array('e', 'Error, ya existe propietario con ese dni');
             }
         }
     } elseif (isset($_POST['mostrarV'])) {
-        // Crear una variable sesión con el propietario
-        $_SESSION['propietario']=$_POST['propietario'];
+        //Crear una variable de sesión con el propietario
+        $_SESSION['propietario'] = $_POST['propietario'];
+    } elseif ($_POST["mostrarR"]) {
+        $_SESSION['vehiculo'] = $_POST['mostrarR'];
     } elseif (isset($_POST['borrar'])) {
     }
     session_write_close();
@@ -86,7 +101,7 @@ if ($bd->getConexion() == null) {
     </section>
     <section>
         <!-- Seleccionar / Visulizar datos de reparaciones -->
-        <?php include_once 'datosReparaciones.php' ?>
+        <?php include_once '../reparacion/datosReparaciones.php' ?>
     </section>
     <footer>
 

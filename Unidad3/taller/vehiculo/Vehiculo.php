@@ -3,6 +3,7 @@ class Vehiculo
 {
     private int $codigo, $propietario;
     private string $matricula, $color;
+
     function __construct($codigo, $propietario, $matricula, $color)
     {
         $this->codigo = $codigo;
@@ -37,6 +38,25 @@ class Vehiculo
         return $this;
     }
 
+    /**
+     * Get the value of propietario
+     */
+    public function getPropietario()
+    {
+        return $this->propietario;
+    }
+
+    /**
+     * Set the value of propietario
+     *
+     * @return  self
+     */
+    public function setPropietario($propietario)
+    {
+        $this->propietario = $propietario;
+
+        return $this;
+    }
 
     /**
      * Get the value of matricula
@@ -74,26 +94,6 @@ class Vehiculo
     public function setColor($color)
     {
         $this->color = $color;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of propietario
-     */
-    public function getPropietario()
-    {
-        return $this->propietario;
-    }
-
-    /**
-     * Set the value of propietario
-     *
-     * @return  self
-     */
-    public function setPropietario($propietario)
-    {
-        $this->propietario = $propietario;
 
         return $this;
     }

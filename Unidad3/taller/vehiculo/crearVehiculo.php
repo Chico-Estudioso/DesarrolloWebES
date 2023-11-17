@@ -28,27 +28,28 @@ function marcarOptionSeleccionado($option, $optionSeleccionado)
                 <select name="propietario">
                     <?php
                     if (isset($_SESSION['propietario'])) {
-                        $pSele=$_SESSION['propietario'];
+                        $pSel = $_SESSION['propietario'];
+                    } else {
+                        $pSel = "";
                     }
                     foreach ($propietarios as $p) {
-                        echo '<option value="'
-                            . $p->getId() . '"'.marcarOptionSeleccionado($p->getId(), $pSele).'>' . $p->getDni() .
+                        echo '<option value="' . $p->getId() . '"' .
+                            marcarOptionSeleccionado($p->getId(), $pSel) . '>' . $p->getDni() .
                             '-' . $p->getNombre() . '</option>';
                     }
                     ?>
                 </select>
-
                 <button type="button" name="crearP" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#crearPropietario">+</button>
             </div>
             <div class="col">
-                <input type="text" name="matricula" placeholder="1234AAA" pattern="[0-9]{4}[A-Z]{3}">
+                <input type="text" name="matricula" placeholder="1234AAA" pattern="[0-9]{4}[A-Z]{3}" />
             </div>
             <div class="col">
-                <input type="color" name="color">
+                <input type="color" name="color" />
             </div>
             <div class="col">
                 <input type="submit" name="crear" value="Crear" class="btn btn-outline-dark" />
-                <input type="submit" name="mostrarV" value="Vehiculos" class="btn btn-outline-dark" />
+                <input type="submit" name="mostrarV" value="Vehículos" class="btn btn-outline-dark" />
                 <input type="reset" name="limpiar" value="Cancelar" class="btn btn-outline-dark" />
             </div>
         </div>
