@@ -64,7 +64,15 @@ if ($bd->getConexion() == null) {
         $_SESSION['propietario'] = $_POST['propietario'];
     } elseif (isset($_POST["mostrarR"])) {
         $_SESSION['vehiculo'] = $_POST['mostrarR'];
-    } elseif (isset($_POST['borrar'])) {
+    }elseif (isset($_POST['updateR'])) {
+        if ($bd->modificarReparacion(
+            $_POST['updateR'],$_POST['horas'] ,$_POST['pagado'], $_POST['precioH'])) {
+            $mensaje=array('i','Reparacion Modificada');
+        }else {
+            $mensaje=array('e', 'Error al modificar la reparacion');
+        }
+    } 
+    elseif (isset($_POST['borrar'])) {
     }
     session_write_close();
 }

@@ -22,20 +22,44 @@ class Modelo
             echo $e->getMessage();
         }
     }
+
+    function modificarReparacion(int $id, float $horas, bool $pagado, float $precioH)
+    {
+        try {
+            $consulta = $this->conexion->prepare('update reparacion set tiempo=?, pagado=?, precioH=? where id=?');
+            $params = array($horas, $pagado, $precioH, $id);
+            if ($consulta->execute($params)) {
+                if ($consulta->rowCount() == 1) {
+                    return true;
+                }
+            }
+        } catch (PDOException $th) {
+            $th->getMessage();
+        }
+        return false;
+    }
+
     function obtenerReparaciones($idV)
     {
         $resultado = array();
         try {
-           $consulta = $this->conexion->prepare(
-            "select * from reparacion where coche = ?");
+            $consulta = $this->conexion->prepare(
+                "select * from reparacion where coche = ?"
+            );
             $params = array($idV);
-            if($consulta->execute($params)){
-                while($fila=$consulta->fetch()){
-                    $r = new Reparacion($fila["id"],$fila["coche"],
-                            $fila["fechaHora"],$fila["tiempo"],$fila["pagado"],
-                            $fila["usuario"],$fila["precioH"]);
+            if ($consulta->execute($params)) {
+                while ($fila = $consulta->fetch()) {
+                    $r = new Reparacion(
+                        $fila["id"],
+                        $fila["coche"],
+                        $fila["fechaHora"],
+                        $fila["tiempo"],
+                        $fila["pagado"],
+                        $fila["usuario"],
+                        $fila["precioH"]
+                    );
                     //Añadir reparación a array resultado
-                    $resultado[]=$r;
+                    $resultado[] = $r;
                 }
             }
         } catch (PDOException $e) {
@@ -85,6 +109,8 @@ class Modelo
         }
         return $resultado;
     }
+
+
 
     function obtenerVehiculo($m)
     {

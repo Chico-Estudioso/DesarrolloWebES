@@ -23,7 +23,7 @@
                     <?php
                     foreach ($reparaciones as $r) {
                         echo '<tr>';
-                        if (isset($_POST['modif']) and $_POST['modif'] == $r->getId()) {
+                        if (isset($_POST['modifR']) and $_POST['modifR'] == $r->getId()) {
                             //Pintar campos para poder modificar
                             echo '<td> <input type="text" name="id" disabled="disabled" value="' . $r->getId() . '"/></td>';
                             echo '<td> <input type="text" name="coche" value="' . $r->getMatricula() . '"/></td>';
@@ -32,7 +32,7 @@
                             echo '<td><input type="checkbox" name="pagado" disabled="disabled" ' . ($r->getPagado() ? 'checked="checked"' : '') . '</td>';
                             echo '<td><input type="text" disabled="disabled" ' . $bd->obtenerUsuarioId($r->getUsuario())->getNombre() . '</td>';
                             echo '<td>';
-                            echo '<button type="submit" class="btn btn-outline-dark" name="update" value="' . $r->getId() . '">Guardar</button>';
+                            echo '<button type="submit" class="btn btn-outline-dark" name="updateR" value="' . $r->getId() . '">Guardar</button>';
                             echo '<button type="submit" class="btn btn-outline-dark" name="cancelar">Cancelar</button>';
                             echo '</td>';
                         } else {
