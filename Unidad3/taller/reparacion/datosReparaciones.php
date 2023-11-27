@@ -7,7 +7,7 @@
     ?>
         <form action="" method="post">
             <input type="submit" name="crearR" class="btn btn-outline-dark" value="+" />
-            <label>Reparaciones vehículo <?php echo $_SESSION['vehiculo']?></label>
+            <label>Reparaciones vehículo <?php echo $_SESSION['vehiculo'] ?></label>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -79,7 +79,7 @@
 
                                     <!-- Modal footer -->
                                     <div class="modal-footer">
-                                        <button type="submit" name="borrar" value="<?php echo $r->getId(); ?>" class="btn btn-danger" data-bs-dismiss="modal">Borrar</button>
+                                        <button type="submit" name="borrarR" value="<?php echo $r->getId(); ?>" class="btn btn-danger" data-bs-dismiss="modal">Borrar</button>
                                     </div>
 
                                 </div>
