@@ -1,3 +1,15 @@
+<?php
+	session_start();
+	if (isset($_SESSION['usuario'])) {
+		//Hay empleado conectado
+		$empleado=$_SESSION['usuario'];
+
+	}else {
+		//Asi rediriges a donde quieres que vaya sino está logueado
+		header('location:login.php');
+	}
+?>
+
 <!doctype html>
 <html>
       <head>
@@ -11,7 +23,9 @@
             </div>    
         	<form action="mensajes.php" method="post">              	
             		<h1 style="color:blue;">Nuevo Mensaje</h1> 
-            		<h2 style="color:blue;">Nombre y dni del empleado</h2>             		
+            		<h2 style="color:blue;"><?php  
+						echo 'Nombre: '.$empleado->getNombre().' -'.' DNI: '.$empleado->getDni().' - Departamento: '.$empleado->getDepartamento();
+					?></h2>             		
             		<hr/> 
             		<div> 
                 		<label for="para">Para</label><br/>           		
