@@ -78,8 +78,34 @@ class Modelo
         return $resultado;
     }
 
+function obtenerMensajesRecibidos($empleado){
+    $resultado=[];
+        try {
+            $consulta=$this->conexion->prepare('SELECT * from para as p 
+            inner join mensaje as m on p.idMen = m.idMen 
+            inner join empleado as e on m.deEmpleado = e.idEmp 
+            inner join departamento as d on m.paraDepartamento = d.d.idDep
+            where p.paraEmpleado = ?');
+            $params=array($empleado);
+            if ($consulta->execute($params)) {
+                while ($fila=$consulta->fetch()) {
+                    $m= new Mensaje($fila['idMen'], new Empleado($fila['idEmp'],$fila['dni'],
+                     $fila['nombreEmp'],$fila['fechaNac'],$fila['departamento'],$fila['cambiarPs']),
+                     new Departamento($fila['paraDepartamento'], 
+                     $fila['nombre']),$fila['asunto'], $fila['fechaEnvio'],$fila['mensaje']);
+                    $resultado[]=$m;
+                }
+
+            }
+            
+        } catch (PDOException $e) {
+            $e->getMessage();
+        }
+        return $resultado;
+}
+
     function obtenerMensajes($empleado){
-        $resultado=false;
+        $resultado=[];
         try {
             $consulta=$this->conexion->prepare('SELECT * from mensaje
                                                 inner join departamento on paraDepartamento = idDep

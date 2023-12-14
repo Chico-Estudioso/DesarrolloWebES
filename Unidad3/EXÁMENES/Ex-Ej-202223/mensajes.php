@@ -93,7 +93,7 @@ if (isset($_POST['enviar'])) {
 				echo '<tr>';
 					'<th align="left">'.$m->getIdMen().'</th>';
 					'<th align="left">'.$m->getParaDepartamento()->getNombre().'</th>';
-					'<th align="left">'.$m->getEmpleado()->getNombre().'</th>';
+					'<th align="left">'.$m->getDeEmpleado()->getNombre().'</th>';
 					echo'<th align="left">'.$m->getFechaEnvio().'</th>';
 					echo'<th align="left">'.$m->getAsunto().'</th>';
 					echo'<th align="left">'.$m->getMensaje().'</th>';
@@ -116,7 +116,7 @@ if (isset($_POST['enviar'])) {
 			foreach ($mensajes as $m) {
 				echo '<tr>';
 					'<th align="left">'.$m->getIdMen().'</th>';
-					'<th align="left">'.$m->getPara()->getNombre().'</th>';
+					'<th align="left">'.$m->getParaDepartamento()->getNombre().'</th>';
 					echo'<th align="left">'.$m->getFechaEnvio().'</th>';
 					echo'<th align="left">'.$m->getAsunto().'</th>';
 					echo'<th align="left">'.$m->getMensaje().'</th>';
