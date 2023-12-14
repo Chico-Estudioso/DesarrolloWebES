@@ -47,24 +47,58 @@ class Modelo
         return $resultado;
     }
 
-    function enviarMensaje(Mensaje $m, $destinatarios)
+    function enviarMensaje($m, $destinatarios)
     {
-        $resultado = false;
+        $resultado = 0;
         try {
             $this->conexion->beginTransaction();
             $consulta = $this->conexion->prepare('INSERT into mensaje values(default,?,?,?,curdate(),?');
             $params = array($m->getDeEmpleado(), $m->getParaDepartamento(), $m->getAsunto(), $m->getMensaje());
         if ($consulta->execute($params)) {
+            $idMensaje=$this->conexion->lastInsertId();
             //Hacer un Insert en para, para cada destinatario
             foreach ($destinatarios as $d) {
                 $consulta = $this->conexion->prepare('INSERT into para values(?,?,false');
-                $params=array(,$d->getIdEmp());
+                $params=array($idMensaje,$d->getIdEmp());
+                if ($consulta->execute($params)) {
+                    if ($consulta->rowCount()!=1) {
+                        $this->conexion->rollBack();
+                    }
+                }
+            }
+            $this->conexion->commit();
+            $resultado=$idMensaje;
+            $m->setIdMen($idMensaje);
+        }
+        } catch (PDOException $e) {
+            $this->conexion->rollBack();
+            $e->getMessage();
+        }
+
+        return $resultado;
+    }
+
+    function obtenerMensajes($empleado){
+        $resultado=false;
+        try {
+            $consulta=$this->conexion->prepare('SELECT * from mensaje
+                                                inner join departamento on paraDepartamento = idDep
+                                                where deEmpleado=?');
+            $params=array($empleado);
+            if ($consulta->execute($params)) {
+                while ($fila=$consulta->fetch()) {
+                    $m= new Mensaje($fila['idMen'], $empleado,
+                     new Departamento($fila['paraDepartamento'], 
+                     $fila['nombre']),$fila['asunto'], $fila['fechaEnvio'],$fila['mensaje']);
+                    $resultado[]=$m;
+                }
 
             }
-        }
+            
         } catch (PDOException $e) {
             $e->getMessage();
         }
+        return $resultado;
     }
 
     function obtenerEmpleadosDepartamento($idDep)

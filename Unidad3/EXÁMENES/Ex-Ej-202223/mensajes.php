@@ -24,7 +24,7 @@ if (isset($_POST['enviar'])) {
 		$m=new Mensaje(0,$empleado->getIdEmp(),$_POST['para'],$_POST['asunto'], date('Y-m-d'), $_POST['mensaje']);
 		$destinatarios=$bd->obtenerEmpleadosDepartamento($_POST['para']);
 		if ($bd->enviarMensaje($m, $destinatarios)) {
-			$mensaje = 'Mensaje enviado con Éxito!';
+			$mensaje = 'Mensaje nº: '.$m->getIdMen().' enviado con Éxito!' .$id;
 		} else {
 			$mensaje = 'Mensaje no enviado';
 		}
@@ -87,6 +87,19 @@ if (isset($_POST['enviar'])) {
 				<th align="left">Asunto</th>
 				<th align="left">Mensaje</th>
 			</tr>
+			<?php 
+			$mensajesRecibidos=$bd->obtenerMensajesRecibidos($empleado);
+			foreach ($mensajesRecibidos as $m) {
+				echo '<tr>';
+					'<th align="left">'.$m->getIdMen().'</th>';
+					'<th align="left">'.$m->getParaDepartamento()->getNombre().'</th>';
+					'<th align="left">'.$m->getEmpleado()->getNombre().'</th>';
+					echo'<th align="left">'.$m->getFechaEnvio().'</th>';
+					echo'<th align="left">'.$m->getAsunto().'</th>';
+					echo'<th align="left">'.$m->getMensaje().'</th>';
+					echo '</tr>';
+			}
+			?>
 		</table>
 		<h1 style="color:blue;">Bandeja de Salida</h1>
 		<hr />
@@ -98,6 +111,18 @@ if (isset($_POST['enviar'])) {
 				<th align="left">Asunto</th>
 				<th align="left">Mensaje</th>
 			</tr>
+			<?php 
+			$mensajes=$bd->obtenerMensajes($empleado);
+			foreach ($mensajes as $m) {
+				echo '<tr>';
+					'<th align="left">'.$m->getIdMen().'</th>';
+					'<th align="left">'.$m->getPara()->getNombre().'</th>';
+					echo'<th align="left">'.$m->getFechaEnvio().'</th>';
+					echo'<th align="left">'.$m->getAsunto().'</th>';
+					echo'<th align="left">'.$m->getMensaje().'</th>';
+					echo '</tr>';
+			}
+			?>
 		</table>
 	</form>
 
