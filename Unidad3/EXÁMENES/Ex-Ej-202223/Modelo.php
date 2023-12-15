@@ -2,184 +2,176 @@
 require_once 'Empleado.php';
 require_once 'Departamento.php';
 require_once 'Mensaje.php';
-class Modelo
-{
-    private string $url = 'mysql:host=localhost;port=3306;dbname=mensajes';
+
+class Modelo{
+    private string $url='mysql:host=localhost;port=3306;dbname=mensajes';
     private string $us = 'root';
     private string $ps = '';
 
-    private $conexion = null;
+    private $conexion=null;
 
     function __construct()
     {
-        try {
-            $this->conexion = new PDO($this->url, $this->us, $this->ps);
-        } catch (PDOException $e) {
+        try{
+            $this->conexion = new PDO($this->url,$this->us,$this->ps);
+        }catch(PDOException $e){
             echo $e->getMessage();
         }
     }
-    function obtenerEmpleado(int $us)
-    {
-        $resultado = null;
-        try {
+    function obtenerMensajesRecidos($empleado){
+        $resultado = array();
+        try{
             $consulta = $this->conexion->prepare(
-                'SELECT * from empleado e join departamento d on e.departamento=d.idDep where idEmp = ?'
-            );
-            $params = array($us);
-            if ($consulta->execute($params)) {
-                if ($fila = $consulta->fetch()) {
-                    $resultado = new Empleado(
-                        $fila['idEmp'],
-                        $fila['dni'],
-                        $fila['nombreEmp'],
-                        $fila['fechaNac'],
-                        new Departamento(
-                            $fila['idDep'],
-                            $fila['nombre']
-                        ),
-                        $fila['cambiarPs']
-                    );
+                'SELECT * 
+                    from para as p 
+                    inner join mensaje as m using(idMen)
+                    inner join empleado as e on m.deEmpleado = e.idEmp 
+                    inner join departamento as d on m.paraDepartamento = d.idDep
+                    where p.paraEmpleado = ?');
+            $params = array($empleado->getIdEmp());
+            if($consulta->execute($params)){
+                while($fila=$consulta->fetch()){
+                    $m = new Mensaje($fila['idMen'],
+                    new Empleado($fila['idEmp'],$fila['dni'],$fila['nombreEmp'],
+                        $fila['fechaNac'],$fila['departamento'],$fila['cambiarPs']),
+                    new Departamento($fila['paraDepartamento'],
+                    
+                                                $fila['nombre']),
+                    $fila['asunto'],$fila['fechaEnvio'],$fila['mensaje']);
+                    $resultado[]=$m;
                 }
             }
-        } catch (PDOException $e) {
+        }catch(PDOException $e){
             echo $e->getMessage();
         }
         return $resultado;
     }
-
-    function enviarMensaje($m, $destinatarios)
+    function obtenerMensajes($empleado)
     {
-        $resultado = 0;
-        try {
+        $resultado = array();
+        try{
+            $consulta = $this->conexion->prepare(
+                'SELECT * from mensaje inner join departamento 
+                    on paraDepartamento = idDep 
+                where deEmpleado = ? order by fechaEnvio desc');
+            $params = array($empleado->getIdEmp());
+            if($consulta->execute($params)){
+                while($fila=$consulta->fetch()){
+                    $m = new Mensaje($fila['idMen'],
+                    $empleado,new Departamento($fila['paraDepartamento'],
+                                                $fila['nombre']),
+                    $fila['asunto'],$fila['fechaEnvio'],$fila['mensaje']);
+                    $resultado[]=$m;
+                }
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        return $resultado;
+    }
+    function enviarMensaje(Mensaje $m,$destinarios){
+        $resultado=0;
+        try{
+            //HAy que hacer inserts en 2 tablas => TRANSACCIÓN
             $this->conexion->beginTransaction();
-            $consulta = $this->conexion->prepare('INSERT into mensaje values(default,?,?,?,curdate(),?');
-            $params = array($m->getDeEmpleado(), $m->getParaDepartamento(), $m->getAsunto(), $m->getMensaje());
-        if ($consulta->execute($params)) {
-            $idMensaje=$this->conexion->lastInsertId();
-            //Hacer un Insert en para, para cada destinatario
-            foreach ($destinatarios as $d) {
-                $consulta = $this->conexion->prepare('INSERT into para values(?,?,false');
-                $params=array($idMensaje,$d->getIdEmp());
-                if ($consulta->execute($params)) {
-                    if ($consulta->rowCount()!=1) {
+            $consulta = $this->conexion->prepare(
+                'INSERT into mensaje values (default,?,?,?,curdate(),?)');
+            $params=array($m->getDeEmpleado(),$m->getParaDepartamento(),
+                            $m->getAsunto(),$m->getMensaje());
+            if($consulta->execute($params)){
+                //REcuperar el id del mensaje generado
+                $idMensaje = $this->conexion->lastInsertId();
+                //Hacer un insert en para para cada destinatario
+                foreach($destinarios as $d){
+                    $consulta = $this->conexion->prepare(
+                        'INSERT into para values (?,?,false)');
+                    $params = array($idMensaje,$d->getIdEmp());
+                    if($consulta->execute($params)){
+                        if($consulta->rowCount()!=1){
+                            $this->conexion->rollBack();
+                        }
+                    }
+                    else{
                         $this->conexion->rollBack();
                     }
                 }
+                $this->conexion->commit();
+                $resultado = $idMensaje;
+                $m->setIdMen($idMensaje);
             }
-            $this->conexion->commit();
-            $resultado=$idMensaje;
-            $m->setIdMen($idMensaje);
-        }
-        } catch (PDOException $e) {
+        }catch(PDOException $e){
             $this->conexion->rollBack();
-            $e->getMessage();
-        }
-
-        return $resultado;
-    }
-
-function obtenerMensajesRecibidos($empleado){
-    $resultado=[];
-        try {
-            $consulta=$this->conexion->prepare('SELECT * from para as p 
-            inner join mensaje as m on p.idMen = m.idMen 
-            inner join empleado as e on m.deEmpleado = e.idEmp 
-            inner join departamento as d on m.paraDepartamento = d.d.idDep
-            where p.paraEmpleado = ?');
-            $params=array($empleado);
-            if ($consulta->execute($params)) {
-                while ($fila=$consulta->fetch()) {
-                    $m= new Mensaje($fila['idMen'], new Empleado($fila['idEmp'],$fila['dni'],
-                     $fila['nombreEmp'],$fila['fechaNac'],$fila['departamento'],$fila['cambiarPs']),
-                     new Departamento($fila['paraDepartamento'], 
-                     $fila['nombre']),$fila['asunto'], $fila['fechaEnvio'],$fila['mensaje']);
-                    $resultado[]=$m;
-                }
-
-            }
-            
-        } catch (PDOException $e) {
-            $e->getMessage();
-        }
-        return $resultado;
-}
-
-    function obtenerMensajes($empleado){
-        $resultado=[];
-        try {
-            $consulta=$this->conexion->prepare('SELECT * from mensaje
-                                                inner join departamento on paraDepartamento = idDep
-                                                where deEmpleado=?');
-            $params=array($empleado);
-            if ($consulta->execute($params)) {
-                while ($fila=$consulta->fetch()) {
-                    $m= new Mensaje($fila['idMen'], $empleado,
-                     new Departamento($fila['paraDepartamento'], 
-                     $fila['nombre']),$fila['asunto'], $fila['fechaEnvio'],$fila['mensaje']);
-                    $resultado[]=$m;
-                }
-
-            }
-            
-        } catch (PDOException $e) {
-            $e->getMessage();
+            echo $e->getMessage();
         }
         return $resultado;
     }
-
-    function obtenerEmpleadosDepartamento($idDep)
-    {
-        $resultado = array();
-        try {
-            $consulta = $this->conexion->prepare('SELECT * from empleado where departamento=?');
+    function obtenerEmpleadosDepartamento($idDep){
+        $resultado=array();
+        try{
+            $consulta = $this->conexion->prepare(
+                'select * from empleado where departamento = ?');
             $params = array($idDep);
-            if ($consulta->execute($params)) {
-                while ($fila = $consulta->fetch()) {
-                    $resultado[] = new Empleado(
-                        $fila['idEmp'],
-                        $fila['dni'],
-                        $fila['nombre'],
-                        $fila['fechaNac'],
-                        $fila['departamento'],
-                        $fila['cambiarPs']
-                    );
+            if($consulta->execute($params)){
+                while($fila=$consulta->fetch()){
+                    $resultado[]=new Empleado($fila['idEmp'],
+                                    $fila['dni'],$fila['nombreEmp'], $fila['fechaNac'],
+                                    $fila['departamento'],$fila['cambiarPs']);
                 }
             }
-        } catch (PDOException $e) {
-            $e->getMessage();
+        }catch(PDOException $e){
+            echo $e->getMessage();
         }
         return $resultado;
     }
-
-    function obtenerDepartamentos()
-    {
-        $resultado = array();
-        try {
+    function obtenerDepartamentos(){
+        $resultado=array();
+        try{
             $consulta = $this->conexion->query('SELECT * from departamento order by nombre');
-            if ($consulta->execute()) {
-                while ($fila = $consulta->fetch()) {
-                    $resultado[] = new Departamento(($fila['idDep']), $fila['nombre']);
+            if($consulta->execute()){
+                while($fila=$consulta->fetch()){
+                    $resultado[]=new Departamento($fila['idDep'],$fila['nombre']);                   
                 }
             }
-        } catch (\PDOException $e) {
-            $e->getMessage();
+        }catch(PDOException $e){
+            echo $e->getMessage();
         }
         return $resultado;
     }
-    function login(int $us, string $ps)
-    {
+    function obtenerEmpleado(int $us){
+        $resultado = null;
+        try{
+            $consulta = $this->conexion->prepare(
+                'SELECT * 
+                    from empleado e inner join departamento d
+                        on e.departamento = d.idDep 
+                    where idEmp = ?');
+            $params=array($us);
+            if($consulta->execute($params)){
+                if($fila=$consulta->fetch()){
+                    $resultado = new Empleado($fila['idEmp'],
+                    $fila['dni'],$fila['nombreEmp'],
+                    $fila['fechaNac'],new Departamento($fila['idDep'],$fila['nombre']),
+                    $fila['cambiarPs']);
+                }
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        return $resultado;
+    }
+    function login(int $us, string $ps){
         $resultado = 0;
-        try {
+        try{
             //Ejecutar fucnión almacenada en bd
             $consulta = $this->conexion->prepare('select login(?,?)');
-            $params = array($us, $ps);
-            if ($consulta->execute($params)) {
-                if ($fila = $consulta->fetch()) {
+            $params = array($us,$ps);
+            if($consulta->execute($params)){
+                if($fila=$consulta->fetch()){
                     //devolver lo que devuelve login
                     return $fila[0];
                 }
             }
-        } catch (PDOException $e) {
+        }catch(PDOException $e){
             echo $e->getMessage();
         }
         return $resultado;
