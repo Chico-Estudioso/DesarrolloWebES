@@ -32,7 +32,6 @@ if (isset($_POST['agregar'])) {
         $mensaje='La cantidad no puede ser inferior a 0';
     }else {
         $productos2=$bd->obtenerSeleccionado($_POST['producto']);
-
     }
 }
 ?>
