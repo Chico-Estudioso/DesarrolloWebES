@@ -17,7 +17,72 @@ class Modelo{
             echo $e->getMessage();
         }
     }
-    
+
+    //Prepare = Si en la consulta hay ?
+    //Query = Todas las demás
+
+    function obtenerTiendas(){
+        $resultado=array();
+        try{
+            $consulta = $this->conexion->query('SELECT * from tienda order by nombre');
+            if($consulta->execute()){
+                while($fila=$consulta->fetch()){
+                    $resultado[]=new Tienda($fila['codigo'],$fila['nombre'],$fila['telefono']);                   
+                }
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        return $resultado;
+    }
+
+    function obtenerTienda($codigo){
+        $resultado=null;
+        try{
+            $consulta = $this->conexion->prepare('SELECT * from tienda where codigo=?');
+            $params=array($codigo);
+            if($consulta->execute()){
+                if ($fila=$consulta->fetch()){
+                    $resultado=new Tienda($fila['codigo'],$fila['nombre'],$fila['telefono']);                   
+                }
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        return $resultado;
+    }
+
+    function obtenerProductos(){
+        $resultado=array();
+        try{
+            $consulta = $this->conexion->prepare('SELECT * from producto order by nombre');
+            if($consulta->execute()){
+                while($fila=$consulta->fetch()){
+                    $resultado[]=new Producto($fila['codigo'],$fila['nombre'],$fila['precio']);                   
+                }
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        return $resultado;
+    }
+
+    function obtenerSeleccionado($code){
+        $resultado=array();
+        try{
+            $consulta = $this->conexion->prepare('SELECT * from producto where codigo = ?');
+            $params=array($code);
+            if($consulta->execute($params)){
+                if($fila=$consulta->fetch()){
+                    $resultado[]=new ProductoEnCesta(new Producto($fila['codigo'],$fila['nombre'],$fila['precio']),$fila['precio']);                   
+                }
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        return $resultado;
+    }
+
 
     /**
      * Get the value of conexion

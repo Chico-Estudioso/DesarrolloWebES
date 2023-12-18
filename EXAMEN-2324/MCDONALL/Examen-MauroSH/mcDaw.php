@@ -94,7 +94,7 @@ if (isset($_POST['agregar'])) {
                             foreach($productos as $p){
                                 echo '<option value="'.$p->getCodigo().'">'.$p->getNombre().'</option>';	
                             }
-                                ?>
+                            ?>
                         </select>
                     </td>
                     <td><input id="cantidad" type="number" name="cantidad" value="1"/></td>
