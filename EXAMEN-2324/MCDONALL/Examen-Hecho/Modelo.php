@@ -67,14 +67,32 @@ class Modelo{
         return $resultado;
     }
 
+    
+    function obtenerDatosTienda($tienda){
+        $resultado=null;
+        try{
+            $consulta = $this->conexion->prepare('SELECT * from tienda where codigo = ?');
+            $params=array($tienda);
+            if($consulta->execute($params)){
+                if($fila=$consulta->fetch()){
+                    $resultado=new Tienda($fila['codigo'],$fila['nombre'],$fila['telefono']);                   
+                }
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        return $resultado;
+    }
+
+
     function obtenerSeleccionado($code){
-        $resultado=array();
+        $resultado=null;
         try{
             $consulta = $this->conexion->prepare('SELECT * from producto where codigo = ?');
             $params=array($code);
             if($consulta->execute($params)){
                 if($fila=$consulta->fetch()){
-                    $resultado[]=new ProductoEnCesta(new Producto($fila['codigo'],$fila['nombre'],$fila['precio']),$fila['precio']);                   
+                    $resultado=new Producto($fila['codigo'],$fila['nombre'],$fila['precio']);                   
                 }
             }
         }catch(PDOException $e){
