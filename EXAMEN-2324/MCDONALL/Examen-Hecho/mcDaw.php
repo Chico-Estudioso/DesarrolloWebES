@@ -30,14 +30,18 @@ if ($bd->getConexion() == null) {
         }
     } elseif (isset($_POST['crearPedido'])) {
         if (isset($_SESSION['cesta'])) {
-            $bd->crearPedido($_SESSION['tienda'], $_SESSION['cestas']);
-            $mensaje='Pedido Creado con éxito';
+          if ($bd->crearPedido($_SESSION['tienda'], $_SESSION['cesta'])) {
+              $mensaje='Pedido Creado con éxito';
+            unset($_SESSION['cesta']);
+        }  else{
+            $rmensaje='Error al crear el peddo';
+        }
+
         } else{
             $mensaje='Error, cesta vacía';
         }
     }
 }
-
 
 ?>
 
