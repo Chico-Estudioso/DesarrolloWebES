@@ -28,6 +28,13 @@ if ($bd->getConexion() == null) {
                 $mensaje = 'Error, producto no existe';
             }
         }
+    } elseif (isset($_POST['crearPedido'])) {
+        if (isset($_SESSION['cesta'])) {
+            $bd->crearPedido($_SESSION['tienda'], $_SESSION['cestas']);
+            $mensaje='Pedido Creado con éxito';
+        } else{
+            $mensaje='Error, cesta vacía';
+        }
     }
 }
 

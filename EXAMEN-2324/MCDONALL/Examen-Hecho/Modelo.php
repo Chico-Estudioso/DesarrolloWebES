@@ -101,6 +101,32 @@ class Modelo{
         return $resultado;
     }
 
+    function crearPedido($tienda, $cesta)
+    {
+        try {
+            $this->conexion->beginTransaction();
+            //Crear Pedido
+            $consulta=$this->conexion->prepare('INSERT into pedido values(default, curdate(), ?');
+            $params=array($tienda);
+            if ($consulta->execute($params)) {
+                
+                //Inserts de productos en cesta
+                $linea=0;
+                foreach ($cesta as $pc) {
+                    $consulta=$this->conexion->prepare('INSERT into detalle values(?,?,?,?,?');
+                    
+                    $params=array($linea++,);
+
+
+                }
+            }
+        
+        } catch (PDOException $e) {
+            $this->conexion->rollBack();
+            echo $e->getMessage();
+        }
+    }
+
 
     /**
      * Get the value of conexion
