@@ -27,6 +27,10 @@ class Modelo
     1) El $consulta->execute params porque hay veces que va en el if y otras veces que va fuera del inf
     2) El puntero del fetch lo tenemos que usar en todos los métodos que no nos devuelvan solo 1 resultado
     o hay que usarlos en todos
+    3) Como se puede acceder a un campo en específico de un $SESSION, al igualarlo de una variable como
+    puedo acceder a los campos de la propia variable??
+    EJ: $SESSION[TOMATE] el campo de [Frutal]
+    o El ejemplo de los jug1 y jug2 de Raúl
     */
 
     function obtenerUsuario(string $us, string $ps)
