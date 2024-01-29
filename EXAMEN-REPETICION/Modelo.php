@@ -67,6 +67,7 @@ class Modelo
         }
         return $resultado;
     }
+    
     function obtenerDatosProductoSeleccionado($codigo)
     {
         $resultado = null;

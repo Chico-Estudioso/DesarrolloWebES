@@ -3,14 +3,13 @@
 class Jugador
 {
     private $nombre, $ganados;
-    
+
     public function __construct($nombre, $ganados)
     {
-        $this->nombre=$nombre;
-        $this->ganados=$ganados;
-
+        $this->nombre = $nombre;
+        $this->ganados = $ganados;
     }
-    
+
     /**
      * @return mixed
      */
@@ -27,9 +26,9 @@ class Jugador
         return $this->ganados;
     }
 
-    
 
-    
+
+
 
     /**
      * @param mixed $nombre
@@ -46,7 +45,4 @@ class Jugador
     {
         $this->ganados = $ganados;
     }
-
-    
 }
-
