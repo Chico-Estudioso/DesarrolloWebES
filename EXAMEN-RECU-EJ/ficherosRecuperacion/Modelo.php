@@ -2,7 +2,7 @@
 require_once 'Cliente.php';
 require_once 'misActividades.php';
 require_once 'Usuario.php';
-require_once 'Activadad.php';
+require_once 'Actividad.php';
 require_once 'login.php';
 require_once 'crearCliente.php';
 

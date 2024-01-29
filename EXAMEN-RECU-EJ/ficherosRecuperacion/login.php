@@ -19,6 +19,11 @@ if ($bd->getConexion() == null) {
                     header("location:crearCliente.php");
                 } elseif ($user->getTipo() == 'C') {
                     $cliente = $bd->obtenerCliente($user->getUsuario());
+                    if ($cliente != null) {
+                        header("location:misActivades.php");
+                    } else {
+                        $mensaje = 'Error, no se ha encontrado este cliente';
+                    }
                 }
             } else {
                 $mensaje = 'Error, usuario no encontrado o contraseña errónea';
