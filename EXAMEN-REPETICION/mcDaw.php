@@ -31,6 +31,10 @@ if ($bd->getConexion() == null) {
                 $mensaje = 'Los datos del producto no coinciden';
             }
         }
+    } elseif (isset($_POST['crearPedido'])) {
+        if (isset($_SESSION['cesta']) and !empty($_SESSION['tienda'])) {
+            $codigoPedido = $bd->crearPedido($_SESSION['cesta'], $_SESSION['tienda']);
+        }
     }
 }
 ?>

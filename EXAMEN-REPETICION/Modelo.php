@@ -83,6 +83,37 @@ class Modelo
         }
         return $resultado;
     }
+    function crearPedido($cesta, $tienda)
+    {
+        try {
+            $resultado = 0;
+            $this->conexion->beginTransaction();
+            $consulta = $this->conexion->prepare(
+                'INSERT into pedido values (default,curdate(),?)'
+            );
+            $params = array($tienda->getCodigo());
+            if ($consulta->execute($params)) {
+                $idP = $this->conexion->lastInsertId();
+                $puntero = 0;
+                foreach ($cesta as $c) {
+                    $consulta = $this->conexion->prepare('INSERT into detalles values (?,?,?,?,?)');
+                    $params = array(++$puntero, $idP, $c->getProducto()->getCodigo(), $c->getCantidad(), $c->getProducto()->getPrecio());
+                    if (!$consulta->execute($params)) {
+                        $this->conexion->rollBack();
+                        return 0;
+                    }
+                }
+                $this->conexion->commit();
+                $resultado = $idP;
+            } else {
+                $this->conexion->rollBack();
+            }
+        } catch (PDOException $e) {
+            $this->conexion->rollBack();
+            echo $e->getMessage();
+        }
+        return $resultado;
+    }
 
     // function introducirProductoEnCesta($producto, $cantidad, $tienda)
     // {
