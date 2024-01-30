@@ -204,3 +204,20 @@ function obtenerPartido($id)
     }
     return $resultado;
 }
+
+function obtenerUsuario($us, $ps)
+{
+    $resultado = null;
+    try {
+        $consulta = $this->conexion->prepare("select * from usuario
+                where usuario = ? and clave = sha2(?,0)");
+        $params = array($us, $ps);
+        $consulta->execute($params);
+        if ($fila = $consulta->fetch()) {
+            $resultado = new Usuario($fila['usuario'], $fila['tipo']);
+        }
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    return $resultado;
+}
