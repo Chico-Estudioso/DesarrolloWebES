@@ -1,0 +1,33 @@
+DROP FUNCTION IF EXISTS sumar_numeros $$
+CREATE FUNCTION sumar_numeros(a INT, b INT)
+RETURNS INT
+BEGIN
+  DECLARE resultado INT;
+  SET resultado = a + b;
+  RETURN resultado;
+END $$
+
+Para hacer funciones recuerda
+SET= Da resultado
+DECLARE= para usar las variables
+IN= Variable externa que entra
+OUT= variable interna que sale
+
+  IF EXISTS (SELECT 1 FROM EMPLEADOS WHERE EMP_NO = codigo_empleado) THEN
+    SET empleado_existente = TRUE;
+  END IF;
+
+SELECT 1 = Para saber si se ha devuelto mínimo 1 fila
+IF () END IF Para hacer los if
+
+SELECT p.dni DNI, p.nombre FROM PROFESOR p JOIN departamento d 
+ON p.codDep=d.codDep WHERE d.nombre LIKE 'Informática y Comunicaciones';
+
+Los Join recuerda hacerlos en la clave que necesites
+
+SELECT a.nombre NOMBRE, format(avg(l.nota), 1) Notas FROM Alumno a
+JOIN matricula m ON a.dni=m.dni
+JOIN lineamatricula l ON m.codMatr=l.codMatr
+GROUP BY a.nombre
+ORDER BY Notas DESC;
+
