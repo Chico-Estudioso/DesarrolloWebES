@@ -155,9 +155,27 @@ DELIMITER ;
 
 -------------------------------------------------------------------------------------------------
 
+UPDATE nombre_tabla SET nombre_campo = valor [, nombre_ campo = valor]...
+[ WHERE condición ];
+|
+|
+v
+UPDATE USUARIOS SET Credito = 300 WHERE Sexo = 'M';
 
 
+DELETE FROM nombre_tabla [ WHERE condición ];
+|
+|
+v
+Para ver un ejemplo de uso de la sentencia DELETE en la que se indique una condición, supongamos que queremos eliminar todos los usuarios cuyo crédito es cero:
+DELETE FROM USUARIOS WHERE Credito = 0;
 
 
-
+INSERT INTO nombre_tabla (lista_campos) VALUES (lista_valores);
+|
+|
+v
+INSERT INTO USUARIOS (Login, Password, Nombre, Apellidos, Direccion, CP, Localidad, Provincia, Pais, F_Nac,
+F_Ing, Correo, Credito, Sexo) VALUES ('migrod86', '6PX5=V', 'MIGUEL ANGEL', 'RODRIGUEZ RODRIGUEZ', 'ARCO DEL LADRILLO,PASEO', 
+'47001', 'VALLADOLID', 'VALLADOLID', 'ESPAÑA', '1977-04-27', '2008-01-10', 'migrod86@gmail.com', 200, 'H');
 -------------------------------------------------------------------------------------------------
