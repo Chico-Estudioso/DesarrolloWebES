@@ -1,3 +1,4 @@
+____________________________________________________________________________________________________
 DROP FUNCTION IF EXISTS sumar_numeros $$
 CREATE FUNCTION sumar_numeros(a INT, b INT)
 RETURNS INT
@@ -31,3 +32,73 @@ JOIN lineamatricula l ON m.codMatr=l.codMatr
 GROUP BY a.nombre
 ORDER BY Notas DESC;
 
+-----------------------------------------------------------------------------------------------
+-- Obtener los clientes cuyo nombre terminen en "S.A.".
+SELECT NOMBRE
+FROM CLIENTES
+WHERE NOMBRE LIKE '%S.A.';
+
+-- Obtener las localidades donde hay clientes.
+SELECT DISTINCT LOCALIDAD
+FROM CLIENTES;
+
+-- Obtener los apellidos de los empleados junto con su salario anual( salario + comision en 14 pagas) ordenado de mayor a menor por este salario total.
+SELECT
+    apellido AS Empleado,
+    SUM(salario + COALESCE(comision * 14, 0)) AS SALARIO_TOTAL_ANUAL
+FROM
+    empleados
+GROUP BY
+    apellido
+ORDER BY
+    SALARIO_TOTAL_ANUAL DESC;
+-------------------------------------------------------------------------------------------------
+SELECT LOWER(CONCAT(apellido, ' ', oficio)) AS apellido_oficio_minusculas
+FROM empleados;
+
+SELECT substr(localidad, 1, 3) FROM CLIENTES WHERE dep_no ;
+
+SELECT upper(concat(nombre, ' ',localidad))  AS 'Primera columna', lower(reverse(concat(nombre, ' ',localidad)))  AS 'Segunda Columna' FROM CLIENTES;
+
+SELECT DATE_FORMAT(FECHA_ALTA,'%w - %d de %m  de %y') FROM EMPLEADOS;
+
+SELECT APELLIDO AS Apellido_Empleado, TIMESTAMPDIFF(YEAR, FECHA_ALTA, CURDATE()) / 3 AS Años_Diferencia FROM EMPLEADOS;
+
+
+-------------------------------------------------------------------------------------------------
+
+
+-- Listar la media de notas de los alumnos por asignatura en cada ciclo. Ordenar los resultados de mayor a menor media.
+SELECT a.nombre NOMBRE, format(avg(l.nota), 1) Notas FROM Alumno a
+JOIN matricula m ON a.dni=m.dni
+JOIN lineamatricula l ON m.codMatr=l.codMatr
+GROUP BY a.nombre
+ORDER BY Notas DESC;
+
+
+SELECT p.dni FROM profesor p
+JOIN departamento d ON p.dni=d.dni
+WHERE d.nombre LIKE 'Administración y Finanzas'
+AND p.prApellido LIKE 'p%' AND p.sgApellido LIKE '%z' AND p.dni IN (SELECT dni FROM contrato WHERE curso LIKE '2022');
+
+
+
+SELECT APELLIDO AS Apellido_Empleado, TIMESTAMPDIFF(YEAR, FECHA_ALTA, CURDATE()) / 3 AS Años_Diferencia FROM EMPLEADOS;
+
+
+
+-------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------
