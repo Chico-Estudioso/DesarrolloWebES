@@ -89,8 +89,67 @@ SELECT APELLIDO AS Apellido_Empleado, TIMESTAMPDIFF(YEAR, FECHA_ALTA, CURDATE())
 
 -------------------------------------------------------------------------------------------------
 
+DELIMITER //
+
+CREATE FUNCTION calcular_salario_anual(
+    IN salario_base DECIMAL(10, 2),
+    IN comision DECIMAL(5, 2),
+    OUT salario_anual DECIMAL(10, 2)
+)
+BEGIN
+    DECLARE salario_mensual DECIMAL(10, 2);
+    DECLARE pagas_anuales INT;
+
+    -- Definir valores
+    SET pagas_anuales = 14;
+
+    -- Calcular salario mensual
+    SET salario_mensual = salario_base + comision;
+
+    -- Calcular salario anual
+    SET salario_anual = salario_mensual * pagas_anuales;
+
+    -- Aplicar ajustes condicionales
+    IF salario_anual > 100000 THEN
+        SET salario_anual = salario_anual * 0.9; -- Reducción del 10% para salarios altos
+    ELSE
+        SET salario_anual = salario_anual * 1.05; -- Aumento del 5% para otros salarios
+    END IF;
+
+    -- Insertar valores en una tabla
+    INSERT INTO RegistroSalarios (salario_base, comision, salario_anual)
+    VALUES (salario_base, comision, salario_anual);
+
+END //
+
+DELIMITER ;
 
 
+DELIMITER //
+
+DROP FUNCTION IF EXISTS calculoEjemplo;
+CREATE FUNCTION calculoEjemplo(codEmp VARCHAR(20))
+RETURNS VARCHAR(255)
+BEGIN
+
+    DECLARE nombre VARCHAR(100);
+    DECLARE apellido VARCHAR(100);
+    DECLARE nom_ap VARCHAR(255);
+    
+    SELECT nomEmp INTO nombre FROM empleados WHERE codigoEmp = codEmp;
+    SELECT apEmp INTO apellido FROM empleados WHERE codigoEmp = codEmp;
+    
+    IF nombre IS NULL OR apellido IS NULL THEN
+        SET nom_ap = 'Dato no disponible';
+    ELSE
+        SET nom_ap = CONCAT(nombre, ' ', apellido);
+    END IF;
+
+    RETURN nom_ap;
+
+END //
+
+DELIMITER ;
 
 
 
