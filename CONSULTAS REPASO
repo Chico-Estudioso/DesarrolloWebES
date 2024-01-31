@@ -179,3 +179,36 @@ INSERT INTO USUARIOS (Login, Password, Nombre, Apellidos, Direccion, CP, Localid
 F_Ing, Correo, Credito, Sexo) VALUES ('migrod86', '6PX5=V', 'MIGUEL ANGEL', 'RODRIGUEZ RODRIGUEZ', 'ARCO DEL LADRILLO,PASEO', 
 '47001', 'VALLADOLID', 'VALLADOLID', 'ESPAÑA', '1977-04-27', '2008-01-10', 'migrod86@gmail.com', 200, 'H');
 -------------------------------------------------------------------------------------------------
+
+CLAUSULAS LOGICAS:
+Funciones de Agregación:
+
+Ejemplos: SUM(), AVG(), COUNT(), MIN(), MAX().
+Utilizadas para realizar operaciones en un conjunto de valores y devolver un solo resultado.
+Funciones Escalares o de Una Sola Fila:
+
+Ejemplos: UPPER(), LOWER(), CONCAT(), LENGTH().
+Operan en una sola fila de datos y devuelven un único valor calculado.
+Funciones de Fecha y Hora:
+
+Ejemplos: NOW(), DATE_FORMAT(), YEAR(), MONTH().
+Utilizadas para manipular y formatear datos relacionados con fechas y horas.
+Funciones de Conversión de Datos:
+
+Ejemplos: CAST(), CONVERT().
+Se utilizan para cambiar el tipo de datos de una expresión.
+Funciones de Control de Flujo:
+
+Ejemplos: CASE, COALESCE(), NULLIF().
+Permiten realizar evaluaciones condicionales y controlar el flujo de ejecución.
+Funciones de Filtrado:
+
+Ejemplos: LIKE, IN, BETWEEN, EXISTS.
+Utilizadas para filtrar datos basándose en condiciones específicas.
+Funciones de Ventana (Window Functions):
+
+Ejemplos: ROW_NUMBER(), RANK(), SUM() OVER().
+Permiten realizar cálculos en un "conjunto de ventana" definido por la cláusula OVER.
+Funciones Definidas por el Usuario (UDF):
+
+Funciones personalizadas creadas por el usuario para realizar tareas específicas.
