@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>TIENDA</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <script>
+      const dns = "http://ec2-44-220-43-148.compute-1.amazonaws.com/";
+      const url = dns + "DWES_MAU/tiendaLaravel/public/api/";
+      var idCliente = -1;
+      var nombreCliente = "";
+      function login() {
+        var servicio = new XMLHttpRequest();
+        servicio.open("POST", url + "cliente", true);
+        
+        servicio.setRequestHeader("Content-Type", "application/json");
+        servicio.onreadystatechange = function () {
+          if (servicio.readyState == XMLHttpRequest.DONE) {
+            if (servicio.status == 200) {
+              var retorno = JSON.parse(servicio.responseText);
+              idCliente = retorno.data.id;
+              nombreCliente = retorno.data.nombre;
+              document.getElementById("txtCliente").innerHTML = idCliente;
+              document.getElementById("txtNombreCliente").innerHTML =
+                nombreCliente;
+            } else {
+              alert(servicio.status + ":" + servicio.responseText);
+            }
+          }
+        };
+        var datos = {
+          email: document.getElementById("email").value,
+          ps: document.getElementById("ps").value,
+        };
+        var datosJSON = JSON.stringify(datos);
+        servicio.send(datosJSON);
+      }
+    </script>
+    <!-- autocompleta clases? -->
+    <div class="container mt-3">
+      <form action="#">
+        <div class="mb-3">
+          <label for="mail" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            name="mail"
+            id="email"
+            value="bebe@gmail.com"
+            aria-describedby="emailHelpId"
+            placeholder="abc@mail.com"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="pass" class="form-label">Contraseña</label>
+          <input
+            type="password"
+            class="form-control"
+            name="pass"
+            id="ps"
+            value="1234"
+            required
+          />
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="login()">
+          Login
+        </button>
+      </form>
+
+      <h2 id="txtCliente"></h2>
+      <h2 id="txtNombreCliente"></h2>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
