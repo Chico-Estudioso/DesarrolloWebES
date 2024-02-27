@@ -20,14 +20,15 @@
 
   <body>
     <script>
-      const dns = "http://ec2-44-220-43-148.compute-1.amazonaws.com/";
+      const dns = "http://ec2-44-197-209-5.compute-1.amazonaws.com/";
       const url = dns + "DWES_MAU/tiendaLaravel/public/api/";
+      const urlIMG = dns + "DWES_MAU/tiendaLaravel/public/storage/";
       var idCliente = -1;
       var nombreCliente = "";
       function login() {
         var servicio = new XMLHttpRequest();
         servicio.open("POST", url + "cliente", true);
-        
+        // alert(url + "cliente");
         servicio.setRequestHeader("Content-Type", "application/json");
         servicio.onreadystatechange = function () {
           if (servicio.readyState == XMLHttpRequest.DONE) {
@@ -35,11 +36,15 @@
               var retorno = JSON.parse(servicio.responseText);
               idCliente = retorno.data.id;
               nombreCliente = retorno.data.nombre;
-              document.getElementById("txtCliente").innerHTML = idCliente;
+              document.getElementById("txtCliente").innerHTML = "ID: ";
               document.getElementById("txtNombreCliente").innerHTML =
+                "NOMBRE: ";
+              document.getElementById("txtCliente").innerHTML += idCliente;
+              document.getElementById("txtNombreCliente").innerHTML +=
                 nombreCliente;
+              cargarProductos();
             } else {
-              alert(servicio.status + ":" + servicio.responseText);
+              alert(servicio.status + ": " + servicio.responseText);
             }
           }
         };
@@ -50,12 +55,90 @@
         var datosJSON = JSON.stringify(datos);
         servicio.send(datosJSON);
       }
+
+      function cargarProductos() {
+        if (idCliente > 0) {
+          console.log("Cargando productos . . .");
+          var servicio = new XMLHttpRequest();
+          servicio.onreadystatechange = function () {
+            if (this.readyState == XMLHttpRequest.DONE && this.status === 200) {
+              console.log("Entrando al estado correcto . . .");
+              console.log(this.responseText);
+              var productos = JSON.parse(this.responseText);
+              var filasTabla = document.getElementById("cuerpoTabla");
+              filasTabla.innerHTML = "";
+              for (let i = 0; i < productos.length; i++) {
+                var fila =
+                  "<tr class='table-primary border border-info border-1'>" +
+                  "<td scope='row' class='fw-bold'>" +
+                  productos[i].id +
+                  "</td>" +
+                  "<td>" +
+                  productos[i].nombre +
+                  "</td>" +
+                  "<td>" +
+                  productos[i].descripcion +
+                  "</td>" +
+                  "<td>" +
+                  productos[i].precio +
+                  "</td>" +
+                  "<td>" +
+                  productos[i].stock +
+                  "</td>" +
+                  "<td>" +
+                  "<img style='width: 100px;' class='img-thumbnail'  src='" +
+                  urlIMG +
+                  productos[i].img +
+                  "'>" +
+                  "</td>" +
+                  "<td>" +
+                  "<button type='button' class='btn btn-success text-white fw-bold' onclick='comprar(" +
+                  productos[i].id +
+                  ")'>COMPRAR</button>" +
+                  "</td>" +
+                  "</tr>";
+                filasTabla.innerHTML += fila;
+              }
+            }
+          };
+        }
+        // alert(url + "apiProductos");
+        servicio.open("GET", url + "apiProductos", true);
+        servicio.send();
+      }
+      function comprar(idProd) {
+        if (idCliente > 0) {
+          console.log("Comprando producto . . .");
+          var servicio = new XMLHttpRequest();
+          servicio.open("POST", url + "apiPedido", true);
+          // alert(url + "cliente");
+          servicio.setRequestHeader("Content-Type", "application/json");
+          servicio.onreadystatechange = function () {
+            if (servicio.readyState == XMLHttpRequest.DONE) {
+              alert("PEDIDO CREADO");
+              cargarProductos();
+            }
+          };
+          var datos = {
+            idC: idCliente,
+            idP: idProd,
+            cantidad: 1,
+          };
+          var datosJSON = JSON.stringify(datos);
+          servicio.send(datosJSON);
+        }
+      }
     </script>
     <!-- autocompleta clases? -->
     <div class="container mt-3">
+      <h1
+        class="nav-underline fw-bold bg-opacity-25 bg-danger bg-gradient text-center sticky-top"
+      >
+        TIENDA LARAVEL
+      </h1>
       <form action="#">
         <div class="mb-3">
-          <label for="mail" class="form-label">Email</label>
+          <label for="mail" class="form-label fw-bold">Email</label>
           <input
             type="email"
             class="form-control"
@@ -67,8 +150,9 @@
             required
           />
         </div>
+        
         <div class="mb-3">
-          <label for="pass" class="form-label">Contraseña</label>
+          <label for="pass" class="form-label fw-bold">Contraseña</label>
           <input
             type="password"
             class="form-control"
@@ -79,13 +163,54 @@
           />
         </div>
 
-        <button type="button" class="btn btn-primary" onclick="login()">
+        <button type="button" class="btn btn-primary mb-3" onclick="login()">
           Login
         </button>
       </form>
 
-      <h2 id="txtCliente"></h2>
-      <h2 id="txtNombreCliente"></h2>
+      <h2 id="txtCliente">ID:</h2>
+      <h2 id="txtNombreCliente" class="mb-4">NOMBRE:</h2>
+
+      <div class="table-responsive">
+        <table
+          class="table table-striped table-hover border border-black border-2 table-borderless table-warning align-middle"
+        >
+          <thead class="table-primary">
+            <caption>
+              CLIENTELA
+            </caption>
+            <tr>
+              <th>ID</th>
+              <th>NOMBRE</th>
+              <th>DESCRIPCION</th>
+              <th>PRECIO</th>
+              <th>STOCK</th>
+              <th>IMAGEN</th>
+              <th>ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody
+            class="table-group-divider table-primary table-bordered border border-danger"
+            id="cuerpoTabla"
+          >
+            <!-- <tr class="table-primary">
+              <td scope="row">Item</td>
+              <td>Item</td>
+              <td>Item</td>
+              <td>Item</td>
+              <td>Item</td>
+              <td>Item</td>
+              <td>Item</td>
+            </tr>
+            <tr class="table-primary">
+              <td scope="row">Item</td>
+              <td>Item</td>
+              <td>Item</td>
+            </tr> -->
+          </tbody>
+          <tfoot></tfoot>
+        </table>
+      </div>
     </div>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
